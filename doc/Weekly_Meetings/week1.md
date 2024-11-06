@@ -9,8 +9,8 @@ Date: 27.10.2024
 4. Can we have more data
 
 ## Todos for next week
-1. Have meeting with the professor to clearify the project and dataset.
-2. Decide the structure of the model
+- [ ] Have meeting with the professor to clarify the project and dataset.
+- [ ] Decide the structure of the model
 
 ## What we have in the data
 Sentence: specialized doctor's description of the patient
