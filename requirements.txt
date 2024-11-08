@@ -2,3 +2,5 @@ transformers
 torch
 pandas
 scikit-learn
+streamlit
+huggingface-hub
