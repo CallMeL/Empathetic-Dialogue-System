@@ -4,3 +4,5 @@ pandas
 scikit-learn
 streamlit
 huggingface-hub
+jupyter
+matplotlib
