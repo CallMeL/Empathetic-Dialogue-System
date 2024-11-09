@@ -18,7 +18,7 @@ python prepare.py
 
 1. train the model
 `--device` can be set to `cpu` or specially `mps` on MacBooks. 
-`max_iters` in the train.py is set to `600000` , it runs forever~ use `^ c` to stop the training at anytime.
+`max_iters` in the train.py is set to `600000` , it runs forever~ use `^ C` to stop the training at anytime.
 ```
 cd ./src/models/nanoGPT
 
@@ -33,8 +33,15 @@ time python train.py \
   --batch_size=8 \
   --device=mps
 ```
+When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
 
-
+## test the model
+###  generate text
+```
+cd ./src/models/nanoGPT
+ python sample.py
+```
+###
 
 ## reference
 1. [nanoGPT](https://github.com/karpathy/nanoGPT)
