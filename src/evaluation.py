@@ -21,6 +21,8 @@ def calculate_bleu(reference_sentences, model_outputs):
         bleu = sentence_bleu(reference_tokens, output_tokens, smoothing_function=smoothing_function)
         bleu_scores.append(bleu)
 
+        print(f"Reference: {ref}")
+
     return bleu_scores
 
 # Example Data
