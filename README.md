@@ -19,5 +19,5 @@ python src/main.py
 run the mlp demo
 ```
 cd src/app
-streamlit run fancyApp.py
+python -m streamlit run fancyApp.py
 ```
