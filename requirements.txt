@@ -6,3 +6,7 @@ streamlit
 huggingface-hub
 jupyter
 matplotlib
+tiktoken
+tqdm
+wandb
+numpy
