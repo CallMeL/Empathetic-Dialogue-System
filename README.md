@@ -12,3 +12,12 @@ pip install -r requirements.txt
 ```
 python src/main.py
 ```
+
+
+
+
+run the mlp demo
+```
+cd src/app
+streamlit run fancyApp.py
+```
