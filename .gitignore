@@ -6,3 +6,4 @@ ginny/
 *.pt
 *.pyc
 input.txt
+.DS_Store
