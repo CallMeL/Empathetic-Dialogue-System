@@ -49,7 +49,7 @@ gradient_accumulation_steps = 5 * 8 # used to simulate larger batch sizes
 batch_size = 12 # how many independent sequence will we process in parallel. if gradient_accumulation_steps > 1, this is the micro-batch size
 block_size = 1024 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
 # model
-n_layer = 12
+n_layer = 12 #  how many transformer block to use
 n_head = 12
 n_embd = 768
 dropout = 0.0 # for pretraining 0 is good, for finetuning try 0.1+
