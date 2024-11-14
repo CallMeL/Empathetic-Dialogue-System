@@ -82,6 +82,12 @@ time python train.py \
 When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
 
 ### test the model
+### chat with the bot
+configure `init_from = 'huggingface' ` or `init_from = 'resume' `
+```
+cd ./src/models/nanoGPT
+ python chat.py
+```
 ###  generate text
 ```
 cd ./src/models/nanoGPT
