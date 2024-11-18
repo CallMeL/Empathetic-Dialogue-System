@@ -67,7 +67,7 @@ python prepare.py
 `max_iters` in the train.py is set to `600000` , it runs forever~ use `^ C` to stop the training at anytime.
 ```
 cd ./src/models/nanoGPT
-
+(add `--init_from=resume \` for continue training)
 time python train.py \
   --n_layer=4 \
   --n_head=4 \

@@ -36,7 +36,7 @@ from model import GPTConfig, GPT
 # I/O
 out_dir = 'out'
 eval_interval = 200
-log_interval = 1
+log_interval = 20
 eval_iters = 200
 eval_only = False # if True, script exits right after the first eval
 always_save_checkpoint = True # if True, always save a checkpoint after each eval
@@ -46,7 +46,7 @@ wandb_log = False # disabled by default
 wandb_project = 'owt'
 wandb_run_name = 'gpt2' # 'run' + str(time.time())
 # data
-dataset = 'openwebtext'
+# dataset = 'openwebtext'
 gradient_accumulation_steps = 5 * 8 # used to simulate larger batch sizes
 batch_size = 12 # how many independent sequence will we process in parallel. if gradient_accumulation_steps > 1, this is the micro-batch size
 block_size = 1024 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
@@ -116,7 +116,7 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 # MARK: - data loading
 # poor man's data loader
 # TODO: the emotion data is in different folder
-data_dir = os.path.join('data', dataset)
+data_dir = os.path.join('../../../data')
 def get_batch(split):
     # We recreate np.memmap every batch to avoid a memory leak, as per
     # https://stackoverflow.com/questions/45132940/numpy-memmap-memory-usage-want-to-iterate-once/61472122#61472122
