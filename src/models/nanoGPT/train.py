@@ -35,7 +35,7 @@ from model import GPTConfig, GPT
 # default config values designed to train a gpt2 (124M) on OpenWebText
 # I/O
 out_dir = 'out'
-eval_interval = 2000
+eval_interval = 200
 log_interval = 1
 eval_iters = 200
 eval_only = False # if True, script exits right after the first eval
@@ -247,7 +247,8 @@ def get_lr(it):
 
 # saving training process
 def save_training_progress(progress, out_dir):
-    progress_file = os.path.join(out_dir, "training_progress.json")
+    max_iters = progress["iteration"][-1]
+    progress_file = os.path.join(out_dir, f"training_progress_{max_iters}.json")
     # Convert tensors to serializable formats
     for key in progress:
         if isinstance(progress[key], list):
@@ -286,7 +287,6 @@ try:
         # evaluate the loss on train/val sets and write checkpoints
         if iter_num % eval_interval == 0 and master_process:
             losses = estimate_loss()
-            #TODO: improve the logging here, maybe add a progress bar
             print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
             if wandb_log:
                 wandb.log({
@@ -296,12 +296,6 @@ try:
                     "lr": lr,
                     "mfu": running_mfu*100, # convert to percentage
                 })
-            training_progress["iteration"].append(iter_num)
-            training_progress["train_loss"].append(float(losses['train'])) 
-            training_progress["val_loss"].append(float(losses['val']))
-            training_progress["learning_rate"].append(float(lr))
-            training_progress["mfu"].append(float(running_mfu * 100)) 
-
             if losses['val'] < best_val_loss or always_save_checkpoint:
                 best_val_loss = losses['val']
                 if iter_num > 0:
@@ -356,6 +350,12 @@ try:
                 mfu = raw_model.estimate_mfu(batch_size * gradient_accumulation_steps, dt)
                 running_mfu = mfu if running_mfu == -1.0 else 0.9*running_mfu + 0.1*mfu
             print(f"iter {iter_num}: loss {lossf:.4f}, time {dt*1000:.2f}ms, mfu {running_mfu*100:.2f}%")
+            training_progress["iteration"].append(iter_num)
+            training_progress["train_loss"].append(float(losses['train'])) 
+            training_progress["val_loss"].append(float(losses['val']))
+            training_progress["learning_rate"].append(float(lr))
+            training_progress["mfu"].append(float(running_mfu * 100)) 
+
         iter_num += 1
         local_iter_num += 1
 

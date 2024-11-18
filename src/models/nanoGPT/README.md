@@ -69,7 +69,6 @@ python prepare.py
 cd ./src/models/nanoGPT
 
 time python train.py \
-  --dataset=shakespeare \
   --n_layer=4 \
   --n_head=4 \
   --n_embd=64 \

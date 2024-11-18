@@ -20,7 +20,7 @@ def download_file(url):
 #download_file('https://huggingface.co/VatsaDev/ChatGpt-nano/resolve/main/Dataset.txt')
 
 # MARK: Change the path to the dataset
-input_file_path = './test.txt'
+input_file_path = './input10.txt'
 with open(input_file_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 

@@ -12,7 +12,7 @@ from huggingface_hub import hf_hub_download
 import shutil
 
 # -----------------------------------------------------------------------------
-init_from = 'huggingface' # if 'huggingface' then it will download the model from huggingface, if 'resume' then it will resume from the out_dir
+init_from = 'resume' # if 'huggingface' then it will download the model from huggingface, if 'resume' then it will resume from the out_dir
 out_dir = 'out' # where trained model lives
 num_samples = 1 # no samples. 1 for 1 chat at a time
 max_new_tokens = 100
