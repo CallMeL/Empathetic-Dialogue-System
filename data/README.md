@@ -1,5 +1,6 @@
 # Dataset
 
+
 ## Source of data
 1. `emotion-emotion_69k.csv` is downloded from [https://www.kaggle.com/datasets/atharvjairath/empathetic-dialogues-facebook-ai/data](the Empathetic Dialogues (Facebook AI) 25k). There are about 50 misplaced data, we just deleted the wrong raws.
 
@@ -70,3 +71,9 @@ _____
      - For input (user's utterance), it would be beneficial for the data to have more values closer to -1 or 1 for model training. Unfortunately, most of the data is clustered around 0. Therefore, generating more emotionally charged utterances using LLMs like ChatGPT might be a good approach.  
      - For output (model's response), the data is primarily distributed between 0 and 1, which seems desirable.  
      - Since we have sentiment data in our dataset, we plan to verify the accuracy of this analysis by comparing them.
+
+## How to get  `train.bin` and `val.bin`
+```
+cd data
+python ./prepare.py
+```

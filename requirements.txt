@@ -10,3 +10,4 @@ tiktoken
 tqdm
 wandb
 numpy
+nltk
