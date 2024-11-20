@@ -11,7 +11,9 @@ def define_data():
         "He is extremely happy with his results",
         "She found the book boring and uninspiring",
         "The weather is beautiful and sunny",
-        "I need help with my homework"
+        "I need help with my homework",
+        "I think you should go to hell",
+        "I feel incredibly lonely and isolated today"
     ]
 
     model_outputs = [
@@ -19,7 +21,9 @@ def define_data():
         "He is extremely happy with results",  # Missing "his"
         "She found the book boring",        # Missing some words
         "The weather is beautiful and sunny", # Exact match
-        "I need some help with homework"    # Slight variation
+        "I need some help with homework",   # Slight variation
+        "I think you should go out and grab a coffee",
+        "I feel somewhat lonely and disconnected today"
     ]
     return reference_sentences, model_outputs
 
@@ -153,7 +157,7 @@ def print_bert_scores(reference_sentences, model_outputs):
         print(f"BERTScore F1: {F1[i].item():.4f}\n")
 
 # *********************************************************************************************************************
-# Sentiment Analysis Evaluation (SST-2)
+# GLUE - Sentiment Analysis Evaluation (SST-2)
 # *********************************************************************************************************************
 def evaluate_sentiment(model_outputs, reference_sentences):
     device = "mps" if torch.backends.mps.is_available() else "cpu"
