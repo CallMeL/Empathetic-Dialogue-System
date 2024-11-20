@@ -69,6 +69,7 @@ python prepare.py
 cd ./src/models/nanoGPT
 (add `--init_from=resume \` for continue training)
 time python train.py \
+  --init_from=resume \
   --n_layer=4 \
   --n_head=4 \
   --n_embd=64 \
