@@ -56,7 +56,17 @@ _____
    + But the thing is, the number of repeated raw is 38,342
    + if we delete this, then we only have 59,835 - 38,342 = **21,493 data**
 
-**🔴 TO DO 🔴**
-1. Clustering & augmentation
-2. df to txt
-3. Data loader
+### for 20.11 talk,
+1. Identified and removed duplicate data from the dataset.
+2. Preprocessed the data (removed stopwords, etc.) and prepared a `.txt` file for input.
+3. Data analysis (input and output)
+   - **A. LDA for word clustering**  
+     - Conducted word clustering using LDA.  
+     - However, the words were not grouped based on emotions.  
+     - Further thought is needed on how to interpret this result.
+
+   - **B. Sentiment Analysis**  
+     - Values closer to -1 indicate negative sentiment, 0 represents neutral, and values closer to 1 indicate positive sentiment.  
+     - For input (user's utterance), it would be beneficial for the data to have more values closer to -1 or 1 for model training. Unfortunately, most of the data is clustered around 0. Therefore, generating more emotionally charged utterances using LLMs like ChatGPT might be a good approach.  
+     - For output (model's response), the data is primarily distributed between 0 and 1, which seems desirable.  
+     - Since we have sentiment data in our dataset, we plan to verify the accuracy of this analysis by comparing them.
