@@ -8,3 +8,5 @@ ginny/
 *.pyc
 input10.txt
 input.txt
+*[playground]*
+*[playground]/
