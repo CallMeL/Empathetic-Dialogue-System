@@ -4,7 +4,7 @@
 NanoGPT is a **decoder-only** transformer based language model. Based on the architecture, each subsection contains essential conception to understand how nanoGPT works.
 ### Encode the input text
 * Encoder takes a string and output a list of integers. 
-* It is done in the preparation phase (`prepare.py`), will get `.bin` files for training and testing.
+* It is done in the preparation phase ([`prepare.py`](https://github.com/CallMeL/Project-ML/blob/master/data/prepare.py), will get `.bin` files for training and testing.
 * In the code the [tiktoken](https://github.com/openai/tiktoken) from openAI is used.
 ### Embeddings
 1. Token embeddings: represent words in matrix
