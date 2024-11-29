@@ -115,8 +115,8 @@ while True:
     start = '<human>'+start_input+'<endOfText><bot>'
 
     # context
-    #context=context+start
+    context=context+start
     
     out = respond(context, num_samples)
-    #ontext=context+out+'<endOfText>'
+    ontext=context+out+'<endOfText>'
     print('Bot: '+ out)
