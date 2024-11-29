@@ -4,6 +4,11 @@
 ## Source of data
 1. `emotion-emotion_69k.csv` is downloded from [https://www.kaggle.com/datasets/atharvjairath/empathetic-dialogues-facebook-ai/data](the Empathetic Dialogues (Facebook AI) 25k). There are about 50 misplaced data, we just deleted the wrong raws.
 
+## the txt data for training
+TODO: Add explaination here
+https://vatsadev.hashnode.dev/making-nanochatgpt-nanogpt-chat-oriented
+RedPajama-3b model
+
 ## Data structure
 **1. The number of data: 64,636**
 
