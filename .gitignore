@@ -4,9 +4,8 @@ env/
 ginny/
 *.bin
 *.pkl
-*.pt
 *.pyc
 input10.txt
 input.txt
-*.json
 openweb/
+out/

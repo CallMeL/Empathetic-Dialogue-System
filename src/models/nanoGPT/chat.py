@@ -10,18 +10,19 @@ from model import GPTConfig, GPT
 import requests
 from huggingface_hub import hf_hub_download
 import shutil
-
+import re
 # -----------------------------------------------------------------------------
 init_from = 'resume' # if 'huggingface' then it will download the model from huggingface, if 'resume' then it will resume from the out_dir
 out_dir = 'out' # where trained model lives
 num_samples = 1 # no samples. 1 for 1 chat at a time
 max_new_tokens = 100
-temperature = 0.8 
-top_k = 5 # retain only the top_k most likely tokens, clamp others to have 0 probability
+temperature = 0.5
+top_k = 10 # retain only the top_k most likely tokens, clamp others to have 0 probability
 device = 'cpu' # examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1', etc.
 dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else 'float16' # 'float32' or 'bfloat16' or 'float16'
 compile = True # use PyTorch 2.0 to compile the model to be faster
-context="<human>Hello, how are you?<endOfText><bot>Thanks, Im good, what about you?<endOfText><human>Im great thanks, My names James, and I'm from the UK, wbu?<endOfText><bot>Hi James, I'm Conner, and im from america. <endOftext>" # a little context for better chat responses
+#context="<human>Hello, how are you?<endOfText><bot>Thanks, Im good, what about you?<endOfText><human>Im great thanks, My names James, and I'm from the UK, wbu?<endOfText><bot>Hi James, I'm Conner, and im from america. <endOftext>" # a little context for better chat responses
+context = ""
 # -----------------------------------------------------------------------------
 
 torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
@@ -93,30 +94,39 @@ def respond(input, samples): # generation function
         with ctx:
             for k in range(samples):
                 generated = model.generate(x, max_new_tokens, temperature=temperature, top_k=top_k)
-                output = decode(generated[0].tolist())
+
+                output = decode(generated[0].tolist())   
+                
+                match = re.search(r'<human>(.*?)<endOfText>', output)
+                print('Robot: '+match.group(1))
+                
+                print('----Debug: Full output--- ')
+                print(output)
 
                 # replace context
-                output = output.replace(input,'')
+                # output = output.replace(input,'')
                 # remove any human response
-                output =  output.partition('<human>')
+                #output =  output.partition('<human>')
                 # if the bot has anything left afterwards, the endOfText token is put to use
-                output_text =  output[0].rpartition('<endOftext>')
-                output_text = output[0] + output[1]
+                #output_text =  output[0].rpartition('<endOftext>')
+                #output_text = output[0] + output[1]
                 # label removing
-                output_text = output_text.replace('<human>',' ')
-                output_text = output_text.replace('<bot>',' ')
-                output_text = output_text.replace('<endOfText>',' ')
-                return output_text
+                #output_text = output_text.replace('<human>',' ')
+                #output_text = output_text.replace('<bot>',' ')
+                #output_text = output_text.replace('<endOfText>',' ')
+                return output
+                # return output_text
 
 # chat loop
 while True:
     # get input from user
     start_input = input('User: ')
-    start = '<human>'+start_input+'<endOfText><bot>'
+    start = '<bot> '+start_input+'<human>'
 
     # context
     context=context+start
     
-    out = respond(context, num_samples)
-    ontext=context+out+'<endOfText>'
-    print('Bot: '+ out)
+    out = respond(start, num_samples)
+    # print(out)
+    #ontext=context+out+'<endOfText>'
+    #print('Bot: '+ out)

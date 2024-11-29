@@ -58,7 +58,7 @@ dropout = 0.0 # for pretraining 0 is good, for finetuning try 0.1+
 bias = False # do we use bias inside LayerNorm and Linear layers?
 # adamw optimizer
 learning_rate = 6e-4 # max learning rate
-max_iters = 600000 # total number of training iterations
+max_iters = 30000 # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
@@ -116,7 +116,7 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 # MARK: - data loading
 # poor man's data loader
 # TODO: the emotion data is in different folder
-data_dir = os.path.join('../../../data')
+data_dir = os.path.join('../../../data/emotion/robot_human_tag/')
 #TODO: this get_batch is also used in LSTM, make it a common function
 def get_batch(split):
     # We recreate np.memmap every batch to avoid a memory leak, as per
