@@ -91,10 +91,10 @@ or
 ```
 python chat.py withoutemotion/singleConversation
 ```
-###  generate text
+###  Evaluate nanoGPT
 ```
 cd ./src/models/nanoGPT
- python sample.py
+python evaluation.py
 ```
 ###
 
