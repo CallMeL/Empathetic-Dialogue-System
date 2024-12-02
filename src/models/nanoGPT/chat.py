@@ -14,7 +14,7 @@ import sys
 # -----------------------------------------------------------------------------
 # if 'huggingface' then it will download the model from huggingface, 
 # if 'resume' then it will resume from the out_dir
-init_from = 'resume' 
+
 out_dir = '../trained-saved' # where trained model lives
 num_samples = 1 # no samples. 1 for 1 chat at a time
 max_new_tokens = 100
@@ -26,9 +26,9 @@ compile = True # use PyTorch 2.0 to compile the model to be faster
 #context="<human>Hello, how are you?<endOfText><bot>Thanks, Im good, what about you?<endOfText><human>Im great thanks, My names James, and I'm from the UK, wbu?<endOfText><bot>Hi James, I'm Conner, and im from america. <endOftext>" # a little context for better chat responses
 context = ""
 # -----------------------------------------------------------------------------
-config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
-exec(open('./configurator.py').read()) # overrides from command line or config file
-config = {k: globals()[k] for k in config_keys} # will be useful for logging
+# config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
+# exec(open('./configurator.py').read()) # overrides from command line or config file
+# config = {k: globals()[k] for k in config_keys} # will be useful for logging
 # -----------------------------------------------------------------------------
 
 torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
@@ -43,7 +43,7 @@ def download_ckpt(repo_id,filename):
   shutil.copy(local_file_path, custom_file_path)
   print(f"File downloaded and saved as: {custom_file_path}")
 
-def init_model(path):
+def init_model_from(path):
     ckpt_path = path
     checkpoint = torch.load(ckpt_path, map_location=device)
     gptconf = GPTConfig(**checkpoint['model_args'])
@@ -57,22 +57,25 @@ def init_model(path):
     return model
 
 # init from huggingface model
-if init_from == 'huggingface':
-  if os.path.isfile('ckpt-huggingface.pt'):
-    model = init_model('ckpt-huggingface.pt')
-  else:
-    download_ckpt('VatsaDev/ChatGpt-nano', 'ckpt.pt')
-    ckpt_path = './out/ckpt-huggingface.pt'
-    model = init_model('ckpt-huggingface.pt')
-# init from our trained model   
-else:
-    ckpt_path = os.path.join(out_dir,init_from,'ckpt.pt')
-    model = init_model(ckpt_path)
+def init_model(init_from):
+    if init_from == 'huggingface':
+        if os.path.isfile('ckpt-huggingface.pt'):
+            model = init_model_from('ckpt-huggingface.pt')
+        else:
+            download_ckpt('VatsaDev/ChatGpt-nano', 'ckpt.pt')
+            ckpt_path = './out/ckpt-huggingface.pt'
+            model = init_model_from('ckpt-huggingface.pt')
+    # init from our trained model   
+    else:
+        ckpt_path = os.path.join(out_dir,init_from,'ckpt.pt')
+        print(f"Loading model from: {ckpt_path}")
+        model = init_model_from(ckpt_path)
 
-model.eval()
-model.to(device)
-if compile:
-    model = torch.compile(model)
+    model.eval()
+    model.to(device)
+    if compile:
+        model = torch.compile(model)
+    return model
 
 # -----------------------------------------------------------------------------
 # gpt-2 encodings
@@ -81,7 +84,7 @@ enc = tiktoken.get_encoding("gpt2")
 encode = lambda s: enc.encode(s, allowed_special={"<|endoftext|>"})
 decode = lambda l: enc.decode(l)
 
-def respond(input, samples): # generation function
+def respond(input, samples, model, enable_print = True): # generation function
     x = (torch.tensor(encode(input), dtype=torch.long, device=device)[None, ...]) 
     with torch.no_grad():
         with ctx:
@@ -92,10 +95,12 @@ def respond(input, samples): # generation function
 
                 # match = re.search(r'<human>(.*?)<endOfText>', output)
                 match = re.search(r'<human>(.*?)\n<bot>', output)
-                print('Robot: '+match.group(1).replace('<endOfText>',''))
+                wanted = match.group(1).replace('<endOfText>','')
+                if enable_print:
+                    print('Robot: '+wanted)
                 
-                print('----Debug: Full output--- ')
-                print(output)
+                    print('----Debug: Full output--- ')
+                    print(output)
 
                 # replace context
                 # output = output.replace(input,'')
@@ -108,23 +113,37 @@ def respond(input, samples): # generation function
                 #output_text = output_text.replace('<human>',' ')
                 #output_text = output_text.replace('<bot>',' ')
                 ## output_text = output_text.replace('<endOfText>',' ')
-                return output
+                return wanted
                 # return output_text
+
+def return_single_sentence(input_sentences, init_from):
+    model = init_model(init_from)
+    outputs = []
+    for sentence in input_sentences:
+        print('Input: '+ sentence)
+        start = '<bot> ' + sentence + '<human>'
+        output = respond(start, num_samples, model=model, enable_print=False)
+        print('Bot: '+ output)
+        outputs.append(output)
+    return outputs
 
 #MARK: chat loop
 
-while True:
-    # get input from user
-    start_input = input('User: ')
-    start = '<bot> '+start_input+'<human>'
+if __name__ == '__main__':
+    init_from = sys.argv[1] 
+    model = init_model(init_from)
+    while True:
+        # get input from user
+        start_input = input('User: ')
+        start = '<bot> '+start_input+'<human>'
 
-    # context
-    context=context+start
-    
-    out = respond(start, num_samples)
-    # print(out)
-    #ontext=context+out+'<endOfText>'
-    #print('Bot: '+ out)
+        # context
+        # context=context+start
+        
+        out = respond(start, num_samples, model)
+        # print(out)
+        #ontext=context+out+'<endOfText>'
+        #print('Bot: '+ out)
 
 #TODO
 # except KeyboardInterrupt:

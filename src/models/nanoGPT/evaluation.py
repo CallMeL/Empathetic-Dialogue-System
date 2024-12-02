@@ -1,30 +1,38 @@
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-import torch, torchvision
+import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from bert_score import score
 from transformers import pipeline
-
+from chat import return_single_sentence as get_response_nanoGPT
+from chat import init_model as ini_nanoGPT
+input_sentences = [
+    "I lost my job last year and got really angry.",
+    "I have lived in my apartment for 5 years now.",
+    "He signed right away and we had a drink to celebrate."
+]
 def define_data():
+    '''
+    paris of conversation (choose from txt file) 
+    TODO: should have a seperate test set and make it automatic
+    1.  - I lost my job last year and got really angry.
+        - I am sorry to hear that. Did it happen out of the blue? <endOfText>
+    2.  - I have lived in my apartment for 5 years now.
+        - wow that is a long time, Are you happy with it? <endOfText>
+    3.  - He signed right away and we had a drink to celebrate.
+        - That's great. How happy were you? <endOfText>
+    '''
     # Example Data
     reference_sentences = [
-        "I feel very sad today",
-        "He is extremely happy with his results",
-        "She found the book boring and uninspiring",
-        "The weather is beautiful and sunny",
-        "I need help with my homework",
-        "I think you should go to hell",
-        "I feel incredibly lonely and isolated today"
+        "I am sorry to hear that. Did it happen out of the blue?",
+        "wow that is a long time, Are you happy with it?",
+        "That's great. How happy were you?"
     ]
-
-    model_outputs = [
-        "I feel very happy today",          # Hypothetical bad output
-        "He is extremely happy with results",  # Missing "his"
-        "She found the book boring",        # Missing some words
-        "The weather is beautiful and sunny", # Exact match
-        "I need some help with homework",   # Slight variation
-        "I think you should go out and grab a coffee",
-        "I feel somewhat lonely and disconnected today"
-    ]
+    model_outputs = []
+    print("====Debuging: geting response from nanoGPT====")
+    model_outputs = get_response_nanoGPT(input_sentences, 'withoutemotion/singleConversation')
+    print("====End DebugingL  geting response from nanoGPT====")
+    
+    
     return reference_sentences, model_outputs
 
 # *********************************************************************************************************************
@@ -47,7 +55,7 @@ def calculate_bleu(reference_sentences, model_outputs):
         bleu = sentence_bleu(reference_tokens, output_tokens, smoothing_function=smoothing_function)
         bleu_scores.append(bleu)
 
-        print(f"Reference: {ref}")
+        print(f"input_sentences: {ref}")
 
     return bleu_scores
 
@@ -77,8 +85,8 @@ def calculate_perplexity(sentences, model_name='gpt2'):
     # Load pre-trained model tokenizer (vocabulary)
     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
     # Load pre-trained model (weights)
-    model = GPT2LMHeadModel.from_pretrained(model_name)
-    model.eval()
+    model = ini_nanoGPT('withoutemotion/singleConversation')
+
 
     # Determine the device: MPS if available, else CPU
     if torch.backends.mps.is_available():
@@ -195,12 +203,12 @@ def evaluate_sentiment(model_outputs, reference_sentences):
 
 if __name__ == "__main__":
     reference_sentences, model_outputs = define_data()
-   # print_bleu_scores(reference_sentences, model_outputs)
+    print_bleu_scores(reference_sentences, model_outputs)
 
     #print(f"PyTorch version: {torch.__version__}")
     #print(f"Torchvision version: {torchvision.__version__}")
-    #print_perplexity_scores(reference_sentences, model_outputs)
+    # print_perplexity_scores(reference_sentences, model_outputs)
 
-    # print_bert_scores(reference_sentences, model_outputs)
+    print_bert_scores(reference_sentences, model_outputs)
 
-    evaluate_sentiment(model_outputs, reference_sentences)
+    # evaluate_sentiment(model_outputs, reference_sentences)

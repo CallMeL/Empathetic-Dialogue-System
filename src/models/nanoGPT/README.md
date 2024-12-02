@@ -85,11 +85,11 @@ When the training starts, hit `^ A` so later we can copy all the logs to this [w
 configure `init_from `based on where the trained model is saved
 ```
 cd ./src/models/nanoGPT
-python chat.py --init_from=withoutemotion/wholeConversation
+python chat.py withoutemotion/wholeConversation
 ```
 or
 ```
-python chat.py --init_from=withoutemotion/singleConversation
+python chat.py withoutemotion/singleConversation
 ```
 ###  generate text
 ```
