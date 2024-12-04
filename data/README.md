@@ -1,5 +1,5 @@
 # Dataset
-
+_Check ```src/69kdataset.ipynb``` for better understanding_
 
 ## Source of data
 1. `emotion-emotion_69k.csv` is downloded from [https://www.kaggle.com/datasets/atharvjairath/empathetic-dialogues-facebook-ai/data](the Empathetic Dialogues (Facebook AI) 25k). There are about 50 misplaced data, we just deleted the wrong raws.
@@ -43,12 +43,11 @@ RedPajama-3b model
         | Mean | 68.28 | 62.85 |
         | Median | 59.0 | 54 |
   - [ ] need to consider whether to use all the sentences or select some based on sentence length
-_____
-
-### 🔊 LATEST UPDATE 🔊
+  
 **5. Delete repeated sentencess**
    + I noticed that the data was repeating itself, with the customer and agent switching each other
    + e.g. In this table, you can see that the input (empathetic dialogues) in rows 3 and 4 are exactly the same as the output (labels) in rows 0 and 1, and the outputs of these are exactly the same as the inputs in rows 1 and 2.
+   + WE DECIDED NOT DELETING THEM
   
 |  | **empathetic_dialogues** | **labels** |
 |---|:---:|:---:|
@@ -58,14 +57,13 @@ _____
 | 3 | Was this a friend you were in love with, or just a best friend? | This was a best friend. I miss her. |
 | 4 | Where has she gone? | We no longer talk. |
 
-   + Maybe they were trying to do data augmentation, but in our case, the model should generate empathetic responses, not act as a storyteller. So, I deleted these reverse conversations. 
-   + But the thing is, the number of repeated raw is 38,342
-   + if we delete this, then we only have 59,835 - 38,342 = **21,493 data**
+**6. Preprocessed the data**
++ removed stopwords, etc.
 
-### for 20.11 talk,
-1. Identified and removed duplicate data from the dataset.
-2. Preprocessed the data (removed stopwords, etc.) and prepared a `.txt` file for input.
-3. Data analysis (input and output)
+**prepared a `.txt` file for input.**
+   + However, apparently nanoGPT does not require removing stopwords and so on
+  
+**7. Data analysis (input and output)**
    - **A. LDA for word clustering**  
      - Conducted word clustering using LDA.  
      - However, the words were not grouped based on emotions.  
@@ -77,7 +75,26 @@ _____
      - For output (model's response), the data is primarily distributed between 0 and 1, which seems desirable.  
      - Since we have sentiment data in our dataset, we plan to verify the accuracy of this analysis by comparing them.
 
+**8. make txt files: ```data2txt.ipynb```**
++ **59k_eachconv_eot**: full data (59k) & have endOfText in every 2 sentences
++ **59k_wholeconv_eot**: full data (59k) & have endOfText at the very end of the whole conversation within the same context
++ **38k_eachconv_eot**: 38k data (after deleting repeated conv) & have endOfText in every 2 sentences
++ **38k_wholeconv_eot**: data (after deleting repeated conv) & have endOfText at the very end of the whole conversation within the same context
+
+
 ## How to get  `train.bin` and `val.bin`
+### 🔊 LATEST UPDATE 🔊
+With our new dataset,
+
+**9. Sentence Length**
+
+
+**10.Vocabulary size**
+
+
+**11. similarity analysis**
+
+
 ```
 cd data
 python ./prepare.py
