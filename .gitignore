@@ -4,10 +4,11 @@ env/
 ginny/
 *.bin
 *.pkl
-*.pt
 *.pyc
 input10.txt
 input.txt
 *.json
 openweb/
 ~$Presentation1.tmp
+openweb/
+out/
