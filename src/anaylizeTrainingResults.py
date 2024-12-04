@@ -5,20 +5,17 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 # visulized training results for nanoGPT
-data_dir = './models/nanoGPT/out'
-save_dir = './imgs'
+data_dir = './src/models/trained-saved/withoutemotion/singleConversation'
+save_dir = os.path.join(data_dir, "imgs")
 
-
-# Directory containing JSON files
-json_dir = "./models/nanoGPT/out"
 
 # Use defaultdict to handle overlapping iterations
 data_combined = defaultdict(lambda: {"train_loss": [], "val_loss": [], "learning_rate": [], "mfu": []})
 
 # Loop through all JSON files in the directory
-for filename in os.listdir(json_dir):
+for filename in os.listdir(data_dir):
     if filename.endswith(".json"):
-        filepath = os.path.join(json_dir, filename)
+        filepath = os.path.join(data_dir, filename)
         with open(filepath, "r") as f:
             data = json.load(f)
             for i, iteration in enumerate(data["iteration"]):

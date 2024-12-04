@@ -11,3 +11,5 @@ tqdm
 wandb
 numpy
 nltk
+torchvision
+bert-score
