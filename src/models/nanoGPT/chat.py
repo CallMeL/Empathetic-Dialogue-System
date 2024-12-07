@@ -94,10 +94,10 @@ def respond(input, samples, model, enable_print = True): # generation function
                 output = decode(generated[0].tolist())   
 
                 # match = re.search(r'<human>(.*?)<endOfText>', output)
-                match = re.search(r'<human>(.*?)\n<bot>', output)
-                wanted = match.group(1).replace('<endOfText>','')
+                # match = re.search(r'<human>(.*?)\n<bot>', output)
+                # wanted = match.group(1).replace('<endOfText>','')
                 if enable_print:
-                    print('Robot: '+wanted)
+                    # print('Robot: '+wanted)
                 
                     print('----Debug: Full output--- ')
                     print(output)
@@ -113,7 +113,7 @@ def respond(input, samples, model, enable_print = True): # generation function
                 #output_text = output_text.replace('<human>',' ')
                 #output_text = output_text.replace('<bot>',' ')
                 ## output_text = output_text.replace('<endOfText>',' ')
-                return wanted
+                # return wanted
                 # return output_text
 
 def return_single_sentence(input_sentences, init_from):
