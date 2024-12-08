@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 # visulized training results for nanoGPT
-data_dir = './src/models/trained-saved/withoutemotion/singleConversation'
+data_dir = './src/models/trained-saved/withemotion'
 save_dir = os.path.join(data_dir, "imgs")
 
 
