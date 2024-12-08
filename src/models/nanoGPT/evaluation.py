@@ -4,7 +4,7 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from bert_score import score
 from transformers import pipeline
 from chat import return_single_sentence as get_response_nanoGPT
-from chat import init_model as ini_nanoGPT
+from chat import init_model as init_nanoGPT
 input_sentences = [
     "I lost my job last year and got really angry.",
     "I have lived in my apartment for 5 years now.",
@@ -85,7 +85,7 @@ def calculate_perplexity(sentences, model_name='gpt2'):
     # Load pre-trained model tokenizer (vocabulary)
     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
     # Load pre-trained model (weights)
-    model = ini_nanoGPT('withoutemotion/singleConversation')
+    model = init_nanoGPT('withoutemotion/singleConversation')
 
 
     # Determine the device: MPS if available, else CPU
