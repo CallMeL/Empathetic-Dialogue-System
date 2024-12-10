@@ -86,11 +86,10 @@ configure `init_from `based on where the trained model is saved
 ```
 cd ./src/models/nanoGPT
 python chat.py withoutemotion/wholeConversation
-```
-or
-```
 python chat.py withoutemotion/singleConversation
+python chat.py withemotion
 ```
+
 ###  Evaluate nanoGPT
 ```
 cd ./src/models/nanoGPT

@@ -11,9 +11,6 @@ from huggingface_hub import hf_hub_download
 import shutil
 import re
 import sys
-# -----------------------------------------------------------------------------
-# if 'huggingface' then it will download the model from huggingface, 
-# if 'resume' then it will resume from the out_dir
 
 out_dir = '../trained-saved' # where trained model lives
 num_samples = 1 # no samples. 1 for 1 chat at a time
@@ -26,11 +23,6 @@ compile = True # use PyTorch 2.0 to compile the model to be faster
 #context="<human>Hello, how are you?<endOfText><bot>Thanks, Im good, what about you?<endOfText><human>Im great thanks, My names James, and I'm from the UK, wbu?<endOfText><bot>Hi James, I'm Conner, and im from america. <endOftext>" # a little context for better chat responses
 context = ""
 # -----------------------------------------------------------------------------
-# config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
-# exec(open('./configurator.py').read()) # overrides from command line or config file
-# config = {k: globals()[k] for k in config_keys} # will be useful for logging
-# -----------------------------------------------------------------------------
-
 torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
 torch.backends.cudnn.allow_tf32 = True # allow tf32 on cudnn
 device_type = 'cuda' if 'cuda' in device else 'cpu' # for later use in torch.autocast
@@ -93,37 +85,41 @@ def respond(input, samples, model, enable_print = True): # generation function
 
                 output = decode(generated[0].tolist())   
 
-                # match = re.search(r'<human>(.*?)<endOfText>', output)
-                match = re.search(r'<human>(.*?)\n<bot>', output)
-                wanted = match.group(1).replace('<endOfText>','')
+                match_botoutput = re.search(r'<human>(.*?)<', output)
+                match_emotion = re.search(r'<emotion>\s*(.*?)\s*<', output)
+                match_context = re.search(r'<context>\s*(.*?)\s*<', output)
+                response = ''
+                emotion = ''
+                context = ''
+                if match_botoutput:
+                    try :
+                        response = match_botoutput.group(1).replace('<endOfText>','')
+                    except:
+                        response = match_botoutput.group(1)
                 if enable_print:
-                    print('Robot: '+wanted)
-                
+                    if match_context:
+                        context = match_context.group(1)
+                        print('Context: '+ context)
+                    if match_emotion:
+                        emotion = match_emotion.group(1)
+                        print('Emotion: '+ emotion)
+                    if match_botoutput:
+                        print('Robot: '+response)
                     print('----Debug: Full output--- ')
                     print(output)
 
-                # replace context
-                # output = output.replace(input,'')
-                # remove any human response
-                #output =  output.partition('<human>')
-                # if the bot has anything left afterwards, the endOfText token is put to use
-                #output_text =  output[0].rpartition('<endOftext>')
-                #output_text = output[0] + output[1]
-                # label removing
-                #output_text = output_text.replace('<human>',' ')
-                #output_text = output_text.replace('<bot>',' ')
-                ## output_text = output_text.replace('<endOfText>',' ')
-                return wanted
-                # return output_text
+                return response, emotion, context
 
-def return_single_sentence(input_sentences, init_from):
+def return_single_sentence(input_sentences, init_from, print_debug = True):
     model = init_model(init_from)
     outputs = []
     for sentence in input_sentences:
-        print('Input: '+ sentence)
+        if print_debug:
+            print('Input: '+ sentence)
         start = '<bot> ' + sentence + '<human>'
         output = respond(start, num_samples, model=model, enable_print=False)
-        print('Bot: '+ output)
+        if print_debug:
+            print('Bot: '+ output)
         outputs.append(output)
     return outputs
 
@@ -140,10 +136,10 @@ if __name__ == '__main__':
         # context
         # context=context+start
         
-        out = respond(start, num_samples, model)
+        out,_,_ = respond(start, num_samples, model)
         # print(out)
         #ontext=context+out+'<endOfText>'
-        #print('Bot: '+ out)
+        # print('Bot: '+ out)
 
 #TODO
 # except KeyboardInterrupt:
