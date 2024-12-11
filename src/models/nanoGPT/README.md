@@ -99,7 +99,8 @@ time python train.py \
   --eval_iters=1 \
   --block_size=64 \
   --batch_size=8 \
-  --device=mps
+  --device=mps \
+  --pos_embd=rope
 ```
 When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
 
