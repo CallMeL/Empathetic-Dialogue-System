@@ -69,7 +69,6 @@ python prepare.py
 cd ./src/models/nanoGPT
 (add `--init_from=resume \` for continue training)
 time python train.py \
-  --init_from=resume \
   --n_layer=4 \
   --n_head=4 \
   --n_embd=64 \
@@ -83,15 +82,18 @@ When the training starts, hit `^ A` so later we can copy all the logs to this [w
 
 ### test the model
 ### chat with the bot
-configure `init_from = 'huggingface' ` or `init_from = 'resume' `
+configure `init_from `based on where the trained model is saved
 ```
 cd ./src/models/nanoGPT
- python chat.py
+python chat.py withoutemotion/wholeConversation
+python chat.py withoutemotion/singleConversation
+python chat.py withemotion
 ```
-###  generate text
+
+###  Evaluate nanoGPT
 ```
 cd ./src/models/nanoGPT
- python sample.py
+python evaluation.py
 ```
 ###
 

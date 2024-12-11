@@ -21,8 +21,8 @@ enc = tiktoken.get_encoding("gpt2")
 
 # MARK: Change the path to the dataset
 # TODO: configure the path to the dataset
-folder_path = './emotion/no_tag/'
-input_file_path = os.path.join(folder_path, 'emotion.txt')
+folder_path = './emotion/emotion_tag/'
+input_file_path = os.path.join(folder_path, '59k_eachconv_eot_with_emotion.txt')
 with open(input_file_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
