@@ -9,7 +9,30 @@ NanoGPT is a **decoder-only** transformer based language model. Based on the arc
 ### Embeddings
 1. Token embeddings: represent words in matrix
 2. Positional embeddings
-   Since the Encoder inside the Transformer simultaneously processes the entire input sequence, the information about the position of the element needs to be encoded inside its embedding. That is why the Positional embedding layer is used, which sums embeddings with a vector of the same dimension: `x = self.transformer.drop(tok_emb + pos_emb`
++ Since the Encoder inside the Transformer simultaneously processes the entire input sequence, the information about the position of the element needs to be encoded inside its embedding. That is why the Positional embedding layer is used, which sums embeddings with a vector of the same dimension: `x = self.transformer.drop(tok_emb + pos_emb`
+
++ ✅ **How can we improve PE?**
+  + We can consider these three Positional Embeddings which are mentioned from the talk 04.12
+  
+    **1. ROPE (Rotary Positional Embeddings)**
+    + Encode positional information by applying rotational transformations to input embeddings
+
+
+    **2. Relative Positional Embeddings**
+    + Instead of encoding the absolute position, focus on the relative distances between tokens in a sequence.
+
+
+    **3. Absolute Positional Embeddings**
+    + Assign a unique vector to each position in the input sequence to encode positional information into the model.
+
+| Feature                     | Absolute Positional Embeddings         | Relative Positional Embeddings         | ROPE                                 |
+|-----------------------------|----------------------------------------|----------------------------------------|--------------------------------------|
+| **Position Representation** | Unique absolute position               | Relative distances between positions   | Relative information via rotation    |
+| **Scalability**             | Limited in some fixed implementations  | Generalizable to varying lengths       | Well-suited for long sequences       |
+| **Computational Efficiency**| Simple                                 | Higher complexity                      | Highly efficient                     |
+| **Use Cases**               | Standard Transformers                 | NLP tasks with context sensitivity     | Large models like GPTs               |
+
+
 
 ### Transformer block
 Each transformer block contains the following part: When we have the output of one transformer block, we pass it to the next (transformer) block.
