@@ -1,0 +1,24 @@
+<bot> I remember going to see the fireworks with my best friend. It was the first time we ever spent time alone together. Although there was a lot of people, we felt like the only people in the world.
+<human> Was this a friend you were in love with, or just a best friend?
+<bot> This was a best friend. I miss her.
+<human> Where has she gone?
+<bot> We no longer talk.
+<human> Oh was this something that happened because of an argument?
+<bot> Was this a friend you were in love with, or just a best friend?
+<human> This was a best friend. I miss her.
+<bot> Where has she gone?
+<human> We no longer talk. <endOfText>
+<bot> Hi how are you doing today
+<human> doing good.. how about you
+<bot> Im good, trying to understand how someone can feel like hitting a blank wall when they see the darkness
+<human> it's quite strange that you didnt imagine it
+<bot> doing good.. how about you
+<human> Im good, trying to understand how someone can feel like hitting a blank wall when they see the darkness
+<bot> it's quite strange that you didnt imagine it
+<human> i dont imagine feeling a lot, maybe your on to something <endOfText>
+<bot> I have never cheated on my wife.
+<human> And thats something you should never do, good on you. 
+<bot> Yea it hasn't been easy but I am proud I haven't
+<human> What do you mean it hasn't been easy? How close have you come to cheating? 
+<bot> And thats something you should never do, good on you.
+<human> Yea it hasn't been easy but I am proud I haven't <endOfText>
