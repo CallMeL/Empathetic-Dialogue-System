@@ -2,7 +2,7 @@ import openai
 import time
 
 # Your OpenAI API key
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = ''
 openai.api_key = OPENAI_API_KEY
 
 def call_chatgpt(conversation):
