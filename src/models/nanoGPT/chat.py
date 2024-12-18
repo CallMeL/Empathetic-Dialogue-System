@@ -97,9 +97,9 @@ def respond(input, samples, model, enable_print = True): # generation function
                     except:
                         response = match_botoutput.group(1)
                 if enable_print:
-                    if match_context:
-                        context = match_context.group(1)
-                        print('Context: '+ context)
+                    # if match_context:
+                    #     context = match_context.group(1)
+                    #     print('Context: '+ context)
                     if match_emotion:
                         emotion = match_emotion.group(1)
                         print('Emotion: '+ emotion)
@@ -128,18 +128,28 @@ def return_single_sentence(input_sentences, init_from, print_debug = True):
 if __name__ == '__main__':
     init_from = sys.argv[1] 
     model = init_model(init_from)
-    while True:
-        # get input from user
-        start_input = input('User: ')
-        start = '<bot> '+start_input+'<human>'
+    #init_from = block_size=64/withcontext, then we need to get a pair of conversation
+    if init_from != 'block_size=64/withcontext':
+        while True:
+            # get input from user
+            start_input = input('User: ')
+            start = '<bot> '+start_input+'<human>'
 
-        # context
-        # context=context+start
-        
-        out,_,_ = respond(start, num_samples, model)
-        # print(out)
-        #ontext=context+out+'<endOfText>'
-        # print('Bot: '+ out)
+            # context
+            # context=context+start
+            
+            out,_,_ = respond(start, num_samples, model)
+            # print(out)
+            #ontext=context+out+'<endOfText>'
+            # print('Bot: '+ out)
+    else:
+        print("Please input a context to start the conversation")
+        context = input('Context: ')
+        context =  '<context>'+ context
+        while True:
+            user_input = input('User: ')
+            start = context+ '<bot> '+user_input + '<human>'
+            out,_,_ = respond(start, num_samples, model)
 
 #TODO
 # except KeyboardInterrupt:

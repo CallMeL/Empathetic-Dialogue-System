@@ -46,14 +46,15 @@ wandb_log = False # disabled by default
 wandb_project = 'owt'
 wandb_run_name = 'gpt2' # 'run' + str(time.time())
 # data
+data_dir = '' # this should be manually configured, in case we forgot which data we are training.
 # dataset = 'openwebtext'
 gradient_accumulation_steps = 5 * 8 # used to simulate larger batch sizes
-batch_size = 12 # how many independent sequence will we process in parallel. if gradient_accumulation_steps > 1, this is the micro-batch size
-block_size = 1024 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
+batch_size = 8 # how many independent sequence will we process in parallel. if gradient_accumulation_steps > 1, this is the micro-batch size
+block_size = 256 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
 # model
-n_layer = 12 #  how many transformer block to use
-n_head = 12
-n_embd = 768
+n_layer = 4 #  how many transformer block to use
+n_head = 4
+n_embd = 64
 dropout = 0.0 # for pretraining 0 is good, for finetuning try 0.1+
 bias = False # do we use bias inside LayerNorm and Linear layers?
 pos_embd = 'default'
@@ -74,7 +75,7 @@ backend = 'nccl' # 'nccl', 'gloo', etc.
 # system
 device = 'mps' # examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1' etc., or try 'mps' on macbooks
 dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else 'float16' # 'float32', 'bfloat16', or 'float16', the latter will auto implement a GradScaler
-compile = True # use PyTorch 2.0 to compile the model to be faster
+compile = False # use PyTorch 2.0 to compile the model to be faster
 # -----------------------------------------------------------------------------
 config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
 exec(open('./configurator.py').read()) # overrides from command line or config file
@@ -116,8 +117,10 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 
 # MARK: - data loading
 # poor man's data loader
-# TODO: the emotion data is in different folder
-data_dir = os.path.join('../../../data/emotion/context_tag/')
+if data_dir == "":
+    print("Init data_dir first! Read readme file for instruction")
+    exit()
+data_dir = os.path.join("../../../", data_dir)
 print(f"======================loading data from {data_dir}=======================")
 #TODO: this get_batch is also used in LSTM, make it a common function
 def get_batch(split):
@@ -253,7 +256,7 @@ def get_lr(it):
 # saving training process
 def save_training_progress(progress, out_dir):
     max_iters = progress["iteration"][-1]
-    progress_file = os.path.join(out_dir, f"training_progress_{max_iters}.json")
+    progress_file = os.path.join(out_dir, f"training_progress_{max_iters}_{data_dir}.json")
     # Convert tensors to serializable formats
     for key in progress:
         if isinstance(progress[key], list):
@@ -367,18 +370,18 @@ try:
         # termination conditions
         if iter_num > max_iters:
             print("Max iterations reached. Finish training...")
-            save_training_progress(training_progress, out_dir)
+            save_training_progress(training_progress, 'out')
             break
 
 
 except KeyboardInterrupt:
     print("\nTraining interrupted by user (Ctrl+C). Saving progress...")
-    save_training_progress(training_progress, out_dir)
+    save_training_progress(training_progress, 'out')
 
 except Exception as e:
     print("\nAn unexpected error occurred. Saving progress...")
     traceback.print_exc() 
-    save_training_progress(training_progress, out_dir)
+    save_training_progress(training_progress, 'out')
     raise
 # finally:
 #     save_training_progress(training_progress, out_dir)
