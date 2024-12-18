@@ -90,17 +90,22 @@ python prepare.py
 `max_iters` in the train.py is set to `600000` , it runs forever~ use `^ C` to stop the training at anytime.
 ```
 cd ./src/models/nanoGPT
-(add `--init_from=resume \` for continue training)
+
+# Training for the fist time
 time python train.py \
+  --data_dir=data/emotion/with_gpt_data/ \
+  
+# other configuration:
   --n_layer=4 \
   --n_head=4 \
   --n_embd=64 \
   --compile=False \
   --eval_iters=1 \
-  --block_size=64 \
+  --block_size=64 \ # default 256
   --batch_size=8 \
   --device=mps \
-  --pos_embd=rope
+  --init_from=resume \ # for continue training
+  --pos_embd=rope \ # change the position embeding 
 ```
 When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
 
@@ -109,9 +114,12 @@ When the training starts, hit `^ A` so later we can copy all the logs to this [w
 configure `init_from `based on where the trained model is saved
 ```
 cd ./src/models/nanoGPT
-python chat.py withoutemotion/wholeConversation
-python chat.py withoutemotion/singleConversation
-python chat.py withemotion
+python chat.py block_size=64/withoutemotion/wholeConversation
+python chat.py block_size=64/withoutemotion/singleConversation
+python chat.py block_size=64/withemotion
+python chat.py block_size=64/withoutemotion/singleConversation_withGPTdata
+python chat.py block_size=64/withcontext
+python chat.py block_size=256/withoutemotion/singleConversation_withGPTdata
 ```
 
 ###  Evaluate nanoGPT
