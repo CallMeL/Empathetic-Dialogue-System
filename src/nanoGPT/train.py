@@ -50,7 +50,7 @@ data_dir = '' # this should be manually configured, in case we forgot which data
 # dataset = 'openwebtext'
 gradient_accumulation_steps = 5 * 8 # used to simulate larger batch sizes
 batch_size = 8 # how many independent sequence will we process in parallel. if gradient_accumulation_steps > 1, this is the micro-batch size
-block_size = 256 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
+block_size = 64 # what is the maximum **context** length we want to use for training? (bigger is better, but slower)
 # model
 n_layer = 4 #  how many transformer block to use
 n_head = 4
@@ -120,7 +120,7 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 if data_dir == "":
     print("Init data_dir first! Read readme file for instruction")
     exit()
-data_dir = os.path.join("../../../", data_dir)
+data_dir = os.path.join("../../", data_dir)
 print(f"======================loading data from {data_dir}=======================")
 #TODO: this get_batch is also used in LSTM, make it a common function
 def get_batch(split):
@@ -256,7 +256,8 @@ def get_lr(it):
 # saving training process
 def save_training_progress(progress, out_dir):
     max_iters = progress["iteration"][-1]
-    progress_file = os.path.join(out_dir, f"training_progress_{max_iters}_{data_dir}.json")
+    dir = data_dir.replace("/", "") .replace(".", "")
+    progress_file = os.path.join(out_dir, f"training_progress_{max_iters}_{dir}.json")
     # Convert tensors to serializable formats
     for key in progress:
         if isinstance(progress[key], list):

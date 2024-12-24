@@ -14,9 +14,11 @@ license: openrail
 0. (for the fancy app) get hugging face token in the website, and set it locally in terminal
 ```
 export HF_TOKEN="HF_XXXXXXXXXXXXX"
+export PYTHONPATH=/Users/Project-ML/src (the absolute path to the src folder in your local machine)
+
 ```
 
-1. cd to src/app and run `gradio simpleApp.py` or `streamlit run fancyApp.py`
+1. cd to src/app and run `gradio simpleApp.py`
 
 
 ## Reference

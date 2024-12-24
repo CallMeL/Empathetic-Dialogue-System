@@ -40,10 +40,13 @@ model_info = {
         'logo': '🍵'
     }
 }
+model_list = { }
 model_choices = list(model_info.keys())
+# init model for default selection
+selected_model_name = "single_conversation_withGPTdata_bs256"
+url = model_info[selected_model_name]['url']
+model_list[selected_model_name] = init_model_from(url, selected_model_name)
 
-# Load model
-model = init_model_from("HannahLin271/nanoGPT_single_conversation", "single_conversation_model")
 # gpt-2 encodings
 print("loading GPT-2 encodings...")
 enc = tiktoken.get_encoding("gpt2")
@@ -51,16 +54,15 @@ encode = lambda s: enc.encode(s, allowed_special={"<|endoftext|>"})
 decode = lambda l: enc.decode(l)
 
 
-def predict(model_selection, input: str, history: list = None) -> tuple:
-    print(f"Selected model: {model_selection}")
+def predict(input: str,  history: list = None) -> tuple:
     if history is None:
         history = []  # Initialize history if not provided
-
     # Generate a response using the respond function
+    print(f"selected_model_name: {selected_model_name}")
     response_data = respond(
         input=input,
         samples=1,
-        model=model,
+        model=model_list[selected_model_name],
         encode=encode,
         decode=decode,
         max_new_tokens=max_new_tokens,
@@ -73,26 +75,30 @@ def predict(model_selection, input: str, history: list = None) -> tuple:
 
     return history, history  # Return updated history twice (for chatbot and state)
 
-def prepare_model(model_selection):
-    return f"Selected model: {model_selection}"
+def prepare_model(selected_model):
+    global selected_model_name
+    selected_model_name = selected_model
+    url = model_info[selected_model]['url']
+    if selected_model not in model_list:
+        model_list[selected_model] = init_model_from(url, selected_model)
+    logo = model_info[selected_model]['logo']
+    description = model_info[selected_model]['description']
+    return f"## {logo}Model Information\n<br>Model_name: {selected_model}\n<br>Description: {description}"
 
+default_model_info = f"## 🍭Model Information\n<br>Model_name: Name of the model\n<br>Description: How we train the model"
 app = gr.Blocks()
 
 with app:
-    gr.Markdown("# 🤖 Chatbot for ML Project\n### 🤗🫂 Chat with your ML-based chatbot!")
+    gr.Markdown("# 🫂 Chatbot for ML Project\n### 🤗 Chat with your  chatbot!")
     # Model Parameters interface
-    parameter_interface = gr.Interface(
-        fn = prepare_model,
-        inputs = [
-            gr.Dropdown(
+    inp = gr.Dropdown(
             choices=model_choices,
-            value=model_choices[0],  # Default selection
             label="Select a Model",
             info="Choose a pre-trained model to power the chatbot."
-        ),
-        ],
-        outputs=gr.Markdown(label="Model Information"),
-    )
+        )
+    out = gr.Markdown(value=default_model_info)
+    inp.change(prepare_model, inp, out)
+
     # Chatbot interface
     chat_interface = gr.Interface(
         fn=predict,
@@ -106,7 +112,6 @@ with app:
         ],
         description="Your AI-based chatbot powered by selected models!"
     )
-
-
+    #TODO: add emotion/context here
 if __name__ == "__main__":
     app.launch(share=True)
