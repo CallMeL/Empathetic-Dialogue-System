@@ -117,7 +117,7 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 # MARK: - data loading
 # poor man's data loader
 # TODO: the emotion data is in different folder
-data_dir = os.path.join('../../../data/emotion/context_tag/')
+data_dir = os.path.join('../../../data/emotion/robot_human_tag/')
 print(f"======================loading data from {data_dir}=======================")
 #TODO: this get_batch is also used in LSTM, make it a common function
 def get_batch(split):
