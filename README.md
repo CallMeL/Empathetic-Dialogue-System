@@ -7,17 +7,3 @@ python -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 ```
-
-1. Run test demo
-```
-python src/main.py
-```
-
-
-
-
-run the mlp demo
-```
-cd src/app
-python -m streamlit run fancyApp.py
-```

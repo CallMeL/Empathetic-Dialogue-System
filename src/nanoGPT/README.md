@@ -101,7 +101,7 @@ time python train.py \
   --n_embd=64 \
   --compile=False \
   --eval_iters=1 \
-  --block_size=64 \ # default 256
+  --block_size=64 \ # default 64
   --batch_size=8 \
   --device=mps \
   --init_from=resume \ # for continue training

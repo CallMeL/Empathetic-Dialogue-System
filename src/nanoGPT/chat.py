@@ -6,7 +6,7 @@ import traceback
 from contextlib import nullcontext
 import torch
 import tiktoken
-from model import GPTConfig, GPT
+from .model import GPTConfig, GPT
 from huggingface_hub import hf_hub_download
 import shutil
 import re
