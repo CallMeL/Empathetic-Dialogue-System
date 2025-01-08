@@ -11,14 +11,17 @@ license: openrail
 ---
 
 ## how to locally run to debug
-0. (for the fancy app) get hugging face token in the website, and set it locally in terminal
+1. environment setup
 ```
 export HF_TOKEN="HF_XXXXXXXXXXXXX"
 export PYTHONPATH=/Users/Project-ML/src (the absolute path to the src folder in your local machine)
 
 ```
-
-1. cd to src/app and run `gradio simpleApp.py`
+2. run the App
+```
+cd src/app
+gradio App.py
+```
 
 
 ## Reference
