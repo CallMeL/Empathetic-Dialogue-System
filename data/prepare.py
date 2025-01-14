@@ -21,7 +21,7 @@ enc = tiktoken.get_encoding("gpt2")
 
 # MARK: Change the path to the dataset
 # TODO: configure the path to the dataset
-folder_path = './emotion/with_gpt_data/'
+folder_path = 'data/emotion/with_gpt_data'
 input_file_path = os.path.join(folder_path, 'with_gpt_data.txt')
 with open(input_file_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
@@ -30,6 +30,11 @@ with open(input_file_path, 'r', encoding='utf-8') as f:
 split_idx = int(len(lines) * 0.9)
 train_data = ''.join(lines[:split_idx])
 val_data = ''.join(lines[split_idx:])
+
+
+# Save the validation data to a file to use it in src/evaluation.ipynb
+with open('validation_data.txt', 'w', encoding='utf-8') as val_file:
+    val_file.write(val_data)
 
 # encode with tiktoken gpt2 bpe
 train_ids = enc.encode_ordinary(train_data)

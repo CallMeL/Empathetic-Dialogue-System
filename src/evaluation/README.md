@@ -1,3 +1,35 @@
+
+# Results
+This is a table with the results of the best performing models for each of the evaluation metrics
+
+List of evaluated models:
+- withoutemotion_single
+- withoutemotion_whole
+- withemotion
+- withcontext
+- gpt_withoutemotion
+- gpt_blocksize_256
+
+**For the small dataset (only facebook data)**
+
+| Evaluation Metrics | Model               |
+|--------------------|---------------------|
+| BLEU              | gpt_blocksize_256  |
+| BertScore         | withemotion         |
+| GLUE              | withemotion         |
+| Perplexity        | withcontext         |
+
+**For the big dataset (facebook + gpt data)**
+
+| Evaluation Metrics | Model               |
+|--------------------|---------------------|
+| BLEU              | gpt_withoutemotion  |
+| BertScore         | gpt_withoutemotion  |
+| GLUE              | withoutemotion_single   |
+| Perplexity        | gpt_withoutemotion     |
+
+
+# Explanation
 ## AVG BLEU: average of BLEU-1, -2, -3, -4
 
 BLEU : Bilingual Evaluation Understudy focuses on n-gram overlap which works well for machine translation tasks but poorly captures the empathy of a response
@@ -59,3 +91,6 @@ GLUE has different possible tasks. For the purpose of our project maybe this one
 GLUE
 
 ```
+
+
+
