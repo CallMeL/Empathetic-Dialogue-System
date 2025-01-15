@@ -5,10 +5,7 @@ ginny/
 *.bin
 *.pkl
 *.pyc
-input10.txt
-input.txt
-openweb/
 ~$Presentation1.tmp
-openweb/
 out/
 .ipynb_checkpoints/
+.idea/
