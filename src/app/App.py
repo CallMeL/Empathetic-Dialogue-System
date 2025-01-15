@@ -29,13 +29,13 @@ model_info = {
         'description': "Trained on Facebook Emotion Dialogues dataset, retaining emotion annotations for each conversation, using a default batch size of 64.",
         'logo': '🍺'
     },
-    "single_conversation_withoutemotion": {
-        'url': 'https://huggingface.co/HannahLin271/NanoGPT/resolve/main/singleConversation_withoutemotion.pt',
+    "single_conversation": {
+        'url': 'https://huggingface.co/HannahLin271/NanoGPT/resolve/main/singleConversation.pt',
         'description': "Trained on Facebook Emotion Dialogues dataset, excluding emotion annotations for simpler conversations, using a default batch size of 64.",
         'logo': '🍷'
     },
-    "whole_conversation_withoutemotion": {
-        'url': 'https://huggingface.co/HannahLin271/NanoGPT/resolve/main/wholeConversation_withoutemotion.pt',
+    "whole_conversation": {
+        'url': 'https://huggingface.co/HannahLin271/NanoGPT/resolve/main/wholeConversation.pt',
         'description': "Trained on entire conversations from the Facebook Emotion Dialogues dataset, excluding tags other than <bot> and <human>,, using a default batch size of 64",
         'logo': '🍵'
     }
@@ -102,7 +102,7 @@ default_model_info = f"## 🍭Model Information\n<br>Model_name: single_conversa
 app = gr.Blocks()
 full_output = " "
 with app:
-    gr.Markdown("# 🫂 Chatbot for ML Project\n### 🤗 Chat with your  chatbot!")
+    gr.Markdown("# 🫂 Empathetic Dialogue System \n🤗For the chatbot, we trained a small language model from scratch in our local machine. You can find the detailed information about our project in the Github repository [here](https://github.com/CallMeL/Project-ML).")
     # Model Parameters interface
     inp = gr.Dropdown(
             choices=model_choices,
