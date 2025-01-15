@@ -1,4 +1,9 @@
 
+# Evaluation
+The evaluation.ipynb notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
+
+## Table of Contents
+
 # Results
 This is a table with the results of the best performing models for each of the evaluation metrics
 
@@ -85,8 +90,9 @@ Reference 1: I feel very sad today
 ## GLUE
 GLUE, also known as General Language Understanding Evaluation, is an evaluation benchmark designed to measure the performance of language understanding models in a range of natural language processing (NLP) tasks.
 
-GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank. Sentiment classification (positive or negative) of sentences.
+GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank 2. Sentiment classification (positive or negative) of sentences.
 
+Compares model-generated sentiments against reference sentiments for a dataset
 ```
 GLUE
 
