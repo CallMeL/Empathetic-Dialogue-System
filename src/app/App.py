@@ -14,9 +14,9 @@ model_info = {
         'description': " We trained this model on on Facebook Emotion Dialogues dataset with additional GPT data, using a batch size of 256.",
         'logo': '🧃'
     },
-    "single_conversation_withGPTdata_withoutemotion": {
+    "single_conversation_withGPTdata": {
         'url': 'https://huggingface.co/HannahLin271/NanoGPT/resolve/main/singleConversation_withGPTdata_withoutemotion.pt',
-        'description': " We trained this model on Facebook Emotion Dialogues dataset with GPT data, excluding emotion tag, using a default batch size of 64.",
+        'description': " We trained this model on Facebook Emotion Dialogues dataset with GPT data, excluding emotion and context tag, using a default batch size of 64.",
         'logo': '🧉'
     },
     "single_conversation_withcontext": {
