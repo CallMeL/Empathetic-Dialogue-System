@@ -1,6 +1,6 @@
 ---
-title: ML-project
-emoji: 🌍
+title: Empathetic Dialogue System
+emoji: 🤗
 colorFrom: blue
 colorTo: indigo
 sdk: gradio
@@ -12,6 +12,7 @@ license: openrail
 
 ## how to locally run to debug
 1. environment setup
+Get a hugging face token according to this [instruction](https://huggingface.co/docs/hub/security-tokens).
 ```
 export HF_TOKEN="HF_XXXXXXXXXXXXX"
 export PYTHONPATH=/Users/Project-ML/src (the absolute path to the src folder in your local machine)
