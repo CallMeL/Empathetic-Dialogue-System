@@ -2,7 +2,14 @@
 # Evaluation
 The evaluation.ipynb notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
 
-## Table of Contents
+## Explanation of the Data
+| Data   | Description                                                                                                                                                                                | Trained Model                              |
+| :---------------------------- |:--------------------------|-----------------|
+| 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               | 3 modified models <br/> single_conversation |
+| 59k_wholeconv_eot             | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted at  the end of the whole conversation.                                                                  | whole_conversation                         |
+| 59k_eachconv_eot_with_context | Under `context_tag` folder.<br />Facebook dataset with `endOfText`  <br />After every 2 sentences, including context.                                                                      | single_conversation_withcontext            |
+| 59k_eachconv_eot_with_emotion | Under `emotion_file` folder.>Facebook dataset with `endOfText`  <br />After every 2 sentences, including emotion.                                                                          | single_conversation_withemotion            |
+| with_gpt_data                 | Under `with_gpt_data` folder.  <br /> Based on  the question in 59k_eachconv_eot, we generated  the answer from ChatGPT 4omini, therefore we have 118k pairs of conversation               | single_conversation_withGPTdata_bs256, single_conversation_withGPTdata_withoutemotion |
 
 # Results
 This is a table with the results of the best performing models for each of the evaluation metrics
@@ -92,7 +99,9 @@ GLUE, also known as General Language Understanding Evaluation, is an evaluation 
 
 GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank 2. Sentiment classification (positive or negative) of sentences.
 
-Compares model-generated sentiments against reference sentiments for a dataset
+Compares model-generated sentiments against reference sentiments for a dataset. In our pipeline we used an **emotion classifier** that uses the model bhadresh-savani/distilbert-base-uncased-emotion from Hugging Face’s Transformers library. 
+
+Supported Classes: Joy, Anger, Sadness, Fear, Surprise, Love, Neutral
 ```
 GLUE
 
