@@ -117,7 +117,6 @@ class GPTConfig:
 Improving positional Embeddings
 1. RoPE
 2. Relative
-3. Dynamic
 """
 
 ################################### 1. RoPE ###################################

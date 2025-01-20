@@ -4,6 +4,7 @@ For the trained models we have:
 2. withemotion: 59k_eachconv_eot_with_emotion.txt
 3. withoutemotion
    1. singleConversation: 59k_eachconv_eot.txt
+      + Additional positional embeddings (Relative, Rope) are applied 
    2. singleConversation_with_gpt_data: with_gpt_data.txt
    3. wholeConversation: 59k_wholeconv_eot.txt
 
