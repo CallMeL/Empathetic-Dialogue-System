@@ -54,3 +54,7 @@ gradio App.py
 ## Locally train the model
 
 Check the section in [our model readme](src/nanoGPT/README.md).
+
+## Evaluate the model
+
+Check the section in [our model evaluation](src/evaluation/README.md).
