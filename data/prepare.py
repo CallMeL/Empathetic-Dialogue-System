@@ -1,35 +1,31 @@
 import os
-import requests
 import tiktoken
 import numpy as np
+from pathlib import Path
 
 train_ids=[]
 val_ids=[]
 enc = tiktoken.get_encoding("gpt2")
 
-#TODO: upload our dataset to huggingface and use the link here
-# def download_file(url):
-#   response = requests.get(url)
-#   if response.status_code == 200:
-#     with open('dataset.txt', 'wb') as f:
-#       f.write(response.content)
-#       print("downloaded dataset, tokenizing")
-#   else:
-#     print('Error downloading file:', response.status_code)
+if __name__ == "__main__":
+    current_path = Path().absolute()
+    print(f"Current absolute path: {current_path}")
+    # Change the path to the dataset
+    folder_path = input(
+        "Enter the dataset name (default: "
+        "'emotion/with_gpt_data/with_gpt_data.txt'): ").strip()
+    if not folder_path:
+        folder_path = 'emotion/with_gpt_data/with_gpt_data.txt'
+    directory_path = os.path.dirname(folder_path)
+    input_file_path = Path(folder_path)
+    print(f"Input file path: {input_file_path}")
+    with open(input_file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
 
-#download_file('https://huggingface.co/VatsaDev/ChatGpt-nano/resolve/main/Dataset.txt')
-
-# MARK: Change the path to the dataset
-# TODO: configure the path to the dataset
-folder_path = 'data/emotion/with_gpt_data'
-input_file_path = os.path.join(folder_path, 'with_gpt_data.txt')
-with open(input_file_path, 'r', encoding='utf-8') as f:
-    lines = f.readlines()
-
-# Split based on lines instead of characters
-split_idx = int(len(lines) * 0.9)
-train_data = ''.join(lines[:split_idx])
-val_data = ''.join(lines[split_idx:])
+    # Split based on lines instead of characters
+    split_idx = int(len(lines) * 0.9)
+    train_data = ''.join(lines[:split_idx])
+    val_data = ''.join(lines[split_idx:])
 
 
 # Save the validation data to a file to use it in src/evaluation.ipynb
@@ -45,5 +41,5 @@ print(f"val has {len(val_ids):,} tokens")
 # export to bin files
 train_ids = np.array(train_ids, dtype=np.uint16)
 val_ids = np.array(val_ids, dtype=np.uint16)
-train_ids.tofile(os.path.join(folder_path, 'train.bin'))
-val_ids.tofile(os.path.join(folder_path, 'val.bin'))
+train_ids.tofile(os.path.join(directory_path, 'train.bin'))
+val_ids.tofile(os.path.join(directory_path, 'val.bin'))

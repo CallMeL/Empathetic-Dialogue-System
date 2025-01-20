@@ -13,3 +13,4 @@ numpy
 nltk
 torchvision
 bert-score
+gradio

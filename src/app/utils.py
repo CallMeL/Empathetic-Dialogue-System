@@ -56,7 +56,7 @@ def init_model_from(url, filename):
     ckpt_path = Path(out_dir) / filename
     ckpt_path.parent.mkdir(parents=True, exist_ok=True)
     if not os.path.exists(ckpt_path):
-        gr.Info('Downloading model...')
+        gr.Info('Downloading model...',duration=10)
         download_file(url, ckpt_path)
         gr.Info('✅Model downloaded successfully.', duration=2)
     checkpoint = torch.load(ckpt_path, map_location=device)
@@ -70,24 +70,24 @@ def init_model_from(url, filename):
     model.load_state_dict(state_dict)
     return model
 
-def respond(input, samples, model, encode, decode, max_new_tokens,temperature, top_k): # generation function
+def respond(input, samples, model, encode, decode, max_new_tokens,temperature, top_k):
+    input = "<bot> " + input
     x = (torch.tensor(encode(input), dtype=torch.long, device=device)[None, ...]) 
     with torch.no_grad():
         for k in range(samples):
+            
             generated = model.generate(x, max_new_tokens, temperature=temperature, top_k=top_k)
 
             output = decode(generated[0].tolist())   
+            # if input in output:
+            #     output = output.split(input)[-1].strip()  # Take the part after `<input>`
 
-            match_botoutput = re.search(r'<human>(.*?)<', output)
-            match_emotion = re.search(r'<emotion>\s*(.*?)\s*<', output)
-            match_context = re.search(r'<context>\s*(.*?)\s*<', output)
+            match_botoutput = re.search(r'<human>(.*?)<', output, re.DOTALL)
             response = ''
-            emotion = ''
-            context = ''
             if match_botoutput:
                 try :
-                    response = match_botoutput.group(1).replace('<endOfText>','')
+                    response = match_botoutput.group(1).strip()
                 except:
-                    response = match_botoutput.group(1)
+                    response = ''
             #return response, emotion, context
-            return [input, response]
+            return [input, response, output]
