@@ -26,19 +26,19 @@ List of evaluated models:
 
 | Evaluation Metrics | Model               |
 |--------------------|---------------------|
-| BLEU              | gpt_blocksize_256  |
-| BertScore         | withemotion         |
-| GLUE              | withemotion         |
-| Perplexity        | withcontext         |
+| BLEU              | single_conversation_withGPTdata_bs256  |
+| BertScore         | single_conversation_withemotion         |
+| GLUE              | single_conversation_withemotion         |
+| Perplexity        | single_conversation_withcontext         |
 
 **For the big dataset (facebook + gpt data)**
 
 | Evaluation Metrics | Model               |
 |--------------------|---------------------|
-| BLEU              | gpt_withoutemotion  |
-| BertScore         | gpt_withoutemotion  |
-| GLUE              | withoutemotion_single   |
-| Perplexity        | gpt_withoutemotion     |
+| BLEU              | single_conversation_withGPTdata_withoutemotion  |
+| BertScore         | single_conversation_withGPTdata_withoutemotion  |
+| GLUE              | single_conversation   |
+| Perplexity        | single_conversation_withGPTdata_withoutemotion     |
 
 
 # Explanation
