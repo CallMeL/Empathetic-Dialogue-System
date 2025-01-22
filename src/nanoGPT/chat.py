@@ -86,9 +86,9 @@ def respond(input, samples, model, enable_print = True): # generation function
 
                 output = decode(generated[0].tolist())   
 
-                match_botoutput = re.search(r'<human>(.*?)<', output)
-                match_emotion = re.search(r'<emotion>\s*(.*?)\s*<', output)
-                match_context = re.search(r'<context>\s*(.*?)\s*<', output)
+                match_botoutput = re.search(r'<human>(.*?)<', output, re.DOTALL)
+                match_emotion = re.search(r'<emotion>(.*?)<', output, re.DOTALL)
+                match_context = re.search(r'<context>(.*?)<', output, re.DOTALL)
                 response = ''
                 emotion = ''
                 context = ''
