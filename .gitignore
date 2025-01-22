@@ -9,3 +9,4 @@ ginny/
 out/
 .ipynb_checkpoints/
 .idea/
+src/nanoGPT/evaluation_result.csv
