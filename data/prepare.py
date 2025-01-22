@@ -27,6 +27,13 @@ if __name__ == "__main__":
     train_data = ''.join(lines[:split_idx])
     val_data = ''.join(lines[split_idx:])
 
+# MARK: Change the path to the dataset
+    # encode with tiktoken gpt2 bpe
+    train_ids = enc.encode_ordinary(train_data)
+    val_ids = enc.encode_ordinary(val_data)
+    print(f"train has {len(train_ids):,} tokens")
+    print(f"val has {len(val_ids):,} tokens")
+
 
 # Save the validation data to a file to use it in src/evaluation.ipynb
 with open('validation_data.txt', 'w', encoding='utf-8') as val_file:
