@@ -47,6 +47,7 @@ def init_model_from(path):
         if k.startswith(unwanted_prefix):
             state_dict[k[len(unwanted_prefix):]] = state_dict.pop(k)
     model.load_state_dict(state_dict)
+
     return model
 
 # init from huggingface model

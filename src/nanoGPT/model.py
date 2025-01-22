@@ -51,13 +51,11 @@ class CausalSelfAttention(nn.Module):
 
     def forward(self, x):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
-
         # calculate query, key, values for all heads in batch and move head forward to be the batch dim
         q, k, v  = self.c_attn(x).split(self.n_embd, dim=2)
         k = k.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
-
         # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         if self.flash:
             # efficient attention using Flash Attention CUDA kernels
@@ -119,8 +117,8 @@ class GPTConfig:
 Improving positional Embeddings
 1. RoPE
 2. Relative
-3. Dynamic
 """
+
 ################################### 1. RoPE ###################################
 class RotaryPositionalEmbedding(nn.Module):
     def __init__(self, config):
@@ -147,6 +145,22 @@ class RotaryPositionalEmbedding(nn.Module):
         rope1, rope2 = rope[..., :dim // 2], rope[..., dim // 2:]
         return torch.cat([x1 * rope1 - x2 * rope2, x1 * rope2 + x2 * rope1], dim=-1)
 
+################################### 2. Relative ###################################
+
+class RelativePositionalEmbedding(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.n_embd = config.n_embd
+        self.max_relative_positions = config.block_size
+        self.relative_embeddings = nn.Embedding(2 * self.max_relative_positions - 1, config.n_embd)
+
+    def forward(self, seq_len, device):
+        range_vec = torch.arange(seq_len, device=device)
+        relative_positions = range_vec.unsqueeze(0) - range_vec.unsqueeze(1)
+        relative_positions += self.max_relative_positions - 1
+        relative_embeddings = self.relative_embeddings(relative_positions.to(torch.long))
+        return relative_embeddings  # (seq_len, seq_len, n_embd)
+
 
 # MARK: - GPT Model
 class GPT(nn.Module):
@@ -161,6 +175,7 @@ class GPT(nn.Module):
             wte = nn.Embedding(config.vocab_size, config.n_embd), # token embedding
             wpe = nn.Embedding(config.block_size, config.n_embd), # positional embedding
             rope = RotaryPositionalEmbedding(config),  # improving PE: 1. RoPE
+            relative = RelativePositionalEmbedding(config), # improving PE: 2. Relative
             drop = nn.Dropout(config.dropout), # dropout layer
             h = nn.ModuleList([Block(config) for _ in range(config.n_layer)]), # the transformer
             ln_f = LayerNorm(config.n_embd, bias=config.bias), # layer norm at the output of the model
@@ -216,25 +231,22 @@ class GPT(nn.Module):
         # 0. Default NanoGPT
             pos_emb = self.transformer.wpe(pos)  # position embeddings of shape (t, n_embd)
             x = self.transformer.drop(tok_emb + pos_emb)
+
         elif self.config.pos_embd == 'rope':
         # 1. RoPE 
             rope = self.transformer.rope.forward(t, device=device)  # (t, n_embd)
             pos_emb = rope.unsqueeze(0).expand(b, -1, -1)  # (b, t, n_embd)
             x = RotaryPositionalEmbedding.apply_rotary_embedding(tok_emb, pos_emb)
+
+        elif self.config.pos_embd == 'relative':
+        # 2. Relative 
+            relative = self.transformer.relative(t, device=device)
+            tok_emb_expanded = tok_emb.unsqueeze(2)
+            relative = relative.unsqueeze(0)
+            relative_emb = relative + tok_emb_expanded  # (batch_size, seq_len, seq_len, n_embd)
+            x = self.transformer.drop(relative_emb.sum(dim=2))
         else:
             raise ValueError(f"Unknown positional embedding type: {self.config.pos_embedding_type}")
-
-        ################################### 0. Default of Nano GPT ###################################
-        # pos_emb = self.transformer.wpe(pos) # position embeddings of shape (t, n_embd)
-        ##TODO: the embedding here is simple, just sum them up, could improve with more sophisticated tokenization
-        # x = self.transformer.drop(tok_emb + pos_emb)
-        
-        # ################################### 1. RoPE ###################################
-        # rope = self.transformer.rope.forward(t, device=device)   # (t, n_embd)
-        # pos_emb = rope.unsqueeze(0).expand(b, -1, -1)  # (b, t, n_embd)
-        # x = RotaryPositionalEmbedding.apply_rotary_embedding(tok_emb, pos_emb)
-
-        #########################################################################################################
 
         for block in self.transformer.h:
             x = block(x)

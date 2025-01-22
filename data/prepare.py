@@ -26,14 +26,26 @@ if __name__ == "__main__":
     train_data = ''.join(lines[:split_idx])
     val_data = ''.join(lines[split_idx:])
 
+# MARK: Change the path to the dataset
     # encode with tiktoken gpt2 bpe
     train_ids = enc.encode_ordinary(train_data)
     val_ids = enc.encode_ordinary(val_data)
     print(f"train has {len(train_ids):,} tokens")
     print(f"val has {len(val_ids):,} tokens")
 
-    # export to bin files
-    train_ids = np.array(train_ids, dtype=np.uint16)
-    val_ids = np.array(val_ids, dtype=np.uint16)
-    train_ids.tofile(os.path.join(directory_path, 'train.bin'))
-    val_ids.tofile(os.path.join(directory_path, 'val.bin'))
+
+# Save the validation data to a file to use it in src/evaluation.ipynb
+with open('validation_data.txt', 'w', encoding='utf-8') as val_file:
+    val_file.write(val_data)
+
+# encode with tiktoken gpt2 bpe
+train_ids = enc.encode_ordinary(train_data)
+val_ids = enc.encode_ordinary(val_data)
+print(f"train has {len(train_ids):,} tokens")
+print(f"val has {len(val_ids):,} tokens")
+
+# export to bin files
+train_ids = np.array(train_ids, dtype=np.uint16)
+val_ids = np.array(val_ids, dtype=np.uint16)
+train_ids.tofile(os.path.join(directory_path, 'train.bin'))
+val_ids.tofile(os.path.join(directory_path, 'val.bin'))

@@ -24,6 +24,11 @@ NanoGPT is a **decoder-only** transformer based language model. Based on the arc
 * In the code the [tiktoken](https://github.com/openai/tiktoken) from openAI is used.
 ### Embeddings
 1. Token embeddings: represent words in matrix
+2. Positional embeddings
++ Since the Encoder inside the Transformer simultaneously processes the entire input sequence, the information about the position of the element needs to be encoded inside its embedding. That is why the Positional embedding layer is used, which sums embeddings with a vector of the same dimension: `x = self.transformer.drop(tok_emb + pos_emb`
++ *. Absolute Positional Embeddings*
+    + Assign a unique vector to each position in the input sequence to encode positional information into the model.
+    + NanoGPT's default embeddings
 2. Positional embeddings (PE)
 Since the Encoder inside the Transformer simultaneously processes the entire 
    input sequence, the information about the position of the element needs to be encoded inside its embedding. That is why the Positional embedding layer is used, which sums embeddings with a vector of the same dimension: `x = self.transformer.drop(tok_emb + pos_emb)`
@@ -34,8 +39,7 @@ We can consider these three Positional Embeddings which are mentioned from the t
     + Encode positional information by applying rotational transformations to input embeddings
 2. Relative Positional Embeddings
     + Instead of encoding the absolute position, focus on the relative distances between tokens in a sequence.
-3. Absolute Positional Embeddings
-    + Assign a unique vector to each position in the input sequence to encode positional information into the model.
+
 
 | Feature                     | Absolute Positional Embeddings         | Relative Positional Embeddings         | ROPE                                 |
 |-----------------------------|----------------------------------------|----------------------------------------|--------------------------------------|
@@ -43,7 +47,6 @@ We can consider these three Positional Embeddings which are mentioned from the t
 | **Scalability**             | Limited in some fixed implementations  | Generalizable to varying lengths       | Well-suited for long sequences       |
 | **Computational Efficiency**| Simple                                 | Higher complexity                      | Highly efficient                     |
 | **Use Cases**               | Standard Transformers                 | NLP tasks with context sensitivity     | Large models like GPTs               |
-
 
 
 ### Transformer block
@@ -121,6 +124,9 @@ time python train.py \
   --init_from=resume \ # for continue training
   --pos_embd=rope \ # change the position embeding 
 ```
++ When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
++ pos_embd options: default, rope, relative
+
 
 ### chat with the bot locally
 configure `init_from `based on where the trained model is saved
@@ -137,6 +143,39 @@ python chat.py block_size=256/singleConversation_withGPTdata
 ###  Evaluate nanoGPT
 check src/evaluation/evaluation.ipynb for details.
 
+### Updating Model Checkpoints for Relative Positional Embeddings
+
+When introducing **Relative Positional Embeddings** to an existing model, the structure of the model changes, potentially causing compatibility issues when loading old checkpoint files. Specifically, older checkpoints will not contain the new parameter,  `transformer.relative.relative_embeddings.weight`, leading to errors during the loading process.
+
+To address this issue, the following function was created to update checkpoints by adding the missing parameters in ```ckpt_update.ipynb```
+
+### Explanation
+
+1. **Purpose**  
+   The function ensures that old checkpoint files can be loaded into the updated model without errors by checking for and adding the new parameter `transformer.relative.relative_embeddings.weight` if it is missing.
+
+2. **How It Works**  
+   - **Checking the State Dictionary:**  
+     The function inspects the `state_dict` of the checkpoint for the key `transformer.relative.relative_embeddings.weight`.
+   - **Adding Missing Parameter:**  
+     If the key is not present, the function initializes the missing parameter as a zero tensor with the same shape as the corresponding weight in the model.
+   - **Updating the Checkpoint:**  
+     The modified `state_dict` is then reassigned to the checkpoint, ensuring compatibility with the updated model.
+
+3. **Example Output**  
+   When a missing parameter is detected and added, the function prints a message to indicate the addition:
+   ```
+   Adding transformer.relative.relative_embeddings.weight to checkpoint.
+   ```
+
+4. **File Naming Convention**  
+   - **Old Checkpoints (`ckpt_original.pt`):**  
+     These files represent the checkpoint files saved before introducing relative positional embeddings. They do not contain the `transformer.relative.relative_embeddings.weight` parameter.
+   - **Updated Checkpoints (`ckpt.pt`):**  
+     After running the `update_checkpoint` function, the updated checkpoint files include the required parameter and can be loaded into the new model without errors.
+
+5. **Integration**  
+   This function should be applied to all old checkpoint files before loading them into the updated model. This guarantees that the model's structure matches the expected state and avoids runtime errors.
 
 ## reference
 1. [nanoGPT](https://github.com/karpathy/nanoGPT)
