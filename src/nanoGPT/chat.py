@@ -2,6 +2,7 @@
 Chat with a trained model, credits: https://github.com/VatsaDev/nanoChatGPT/blob/main/chat.py
 """
 import os
+from pathlib import Path
 import traceback
 from contextlib import nullcontext
 import torch
@@ -59,7 +60,7 @@ def init_model(init_from):
             model = init_model_from('ckpt-huggingface.pt')
     # init from our trained model   
     else:
-        ckpt_path = os.path.join(out_dir,init_from,'ckpt.pt')
+        ckpt_path = Path(init_from)
         print(f"Loading model from: {ckpt_path}")
         model = init_model_from(ckpt_path)
 
