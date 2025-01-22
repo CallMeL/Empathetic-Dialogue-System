@@ -248,18 +248,6 @@ class GPT(nn.Module):
         else:
             raise ValueError(f"Unknown positional embedding type: {self.config.pos_embedding_type}")
 
-        ################################### 0. Default of Nano GPT ###################################
-        # pos_emb = self.transformer.wpe(pos) # position embeddings of shape (t, n_embd)
-        ##TODO: the embedding here is simple, just sum them up, could improve with more sophisticated tokenization
-        # x = self.transformer.drop(tok_emb + pos_emb)
-        
-        # ################################### 1. RoPE ###################################
-        # rope = self.transformer.rope.forward(t, device=device)   # (t, n_embd)
-        # pos_emb = rope.unsqueeze(0).expand(b, -1, -1)  # (b, t, n_embd)
-        # x = RotaryPositionalEmbedding.apply_rotary_embedding(tok_emb, pos_emb)
-
-        #########################################################################################################
-
         for block in self.transformer.h:
             x = block(x)
         x = self.transformer.ln_f(x)
