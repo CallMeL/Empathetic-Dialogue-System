@@ -5,7 +5,7 @@ The evaluation.ipynb notebook is designed to evaluate multiple models using diff
 ## Explanation of the Data
 | Data   | Description                                                                                                                                                                                | Trained Model                              |
 | :---------------------------- |:--------------------------|-----------------|
-| 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               | 3 modified models <br/> single_conversation |
+| 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               |single_conversation <br/> single_conversation_rope  <br/>single_conversation_relative  |
 | 59k_wholeconv_eot             | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted at  the end of the whole conversation.                                                                  | whole_conversation                         |
 | 59k_eachconv_eot_with_context | Under `context_tag` folder.<br />Facebook dataset with `endOfText`  <br />After every 2 sentences, including context.                                                                      | single_conversation_withcontext            |
 | 59k_eachconv_eot_with_emotion | Under `emotion_file` folder.>Facebook dataset with `endOfText`  <br />After every 2 sentences, including emotion.                                                                          | single_conversation_withemotion            |
@@ -15,39 +15,41 @@ The evaluation.ipynb notebook is designed to evaluate multiple models using diff
 This is a table with the results of the best performing models for each of the evaluation metrics
 
 List of evaluated models:
-- withoutemotion_single - single_conversation
+- single_conversation
 - single_conversation_rope
 - single_conversation_relative
-- withoutemotion_whole - whole_conversation
-- withemotion - single_conversation_withemotion
-- withcontext - single_conversation_withcontext
-- gpt_withoutemotion - single_conversation_withGPTdata_withoutemotion
-- gpt_blocksize_256 - single_conversation_withGPTdata_bs256,
+- whole_conversation
+- single_conversation_withemotion
+- single_conversation_withcontext
+- single_conversation_withGPTdata_withoutemotion
+- single_conversation_withGPTdata_bs256,
 
 **For the small dataset (only facebook data)**
 
 | Model     | BLEU | Bert F1 |  GLUE | Perplexity |
 |--------------------|---------------------|---------------------|---------------------|---------------------|
 |single_conversation | 0.006294341508914749 | 0.8573648929595947 | 0.51 | 2864.188433546633 |
-|single_conversation_rope | 0.0060 |  0.8589 | 0.42 | 2884.63 |
-|single_conversation_relative | **0.0069** | 0.8260 | 0.4 | 375210408.83|
+|single_conversation_rope | 0.006449718067498683 |0.5237810611724854|0.36|138019.7266265564|
+|single_conversation_relative | 0.006187011514139771|0.8079032897949219|0.42| 44209813.24339561|
 |whole_conversation | 0.005549381274013914 | 0.7825521230697632 | 0.4 | X |
 |single_conversation_withemotion | 0.005371129646648176 | **0.8595598340034485** | **0.54** | 937750.794195298 |
 |single_conversation_withcontext | 0.0056097142272521225 | 0.8526116013526917 | 0.42 | **2825.1275006949722** |
 |single_conversation_withGPTdata_withoutemotion | 0.006452090556086916 | 0.8585449457168579 | 0.48 | 7074.3668454626595 |
-|single_conversation_withGPTdata_bs256 | 0.00661592114219667 | 0.5561996102333069 | 0.35 | 24069.64634160262 |
+|single_conversation_withGPTdata_bs256 | **0.00661592114219667**| 0.5561996102333069 | 0.35 | 24069.64634160262 |
 
 
 **For the big dataset (facebook + gpt data)**
 
 | Model     | BLEU | Bert F1 |  GLUE | Perplexity |
 |--------------------|---------------------|---------------------|---------------------|---------------------|
-|withoutemotion_single | 0.00587468362062949 | 0.8568010926246643 | **0.4727166374195705** | 84066.95248548205 |
-|withoutemotion_whole | 0.005539267542303131 | 0.8480852246284485 | 0.43603242249519514 | 29549.33700155131 |
-|withemotion | 0.005846493825725561 | 0.8573451042175293 | 0.4721316954959472 | 2008198.4398578384 |
-|withcontext | 0.005802720584588993 | 0.8359043002128601 | 0.45884515751650373 | 63035.03316265359 |
-|gpt_withoutemotion | **0.006432147502200551** | **0.8576485514640808** | 0.47171387983621627 | **28233.374812001217** |
-|gpt_blocksize_256 | 0.0062091122888948 | 0.48648038506507874 | 0.34519929806969163 | 218114.86185134976 |
+|single_conversation| 0.00587468362062949 | 0.8568010926246643 | **0.4727166374195705** | 84066.95248548205 |
+|single_conversation_rope |0.005886990900708465|0.48094046115875244|0.32974011865964736|3776063.144329027|
+|single_conversation_relative |0.005992347214885741|0.36667502297986126|0.32974011865964736|inf|
+|whole_conversation | 0.005539267542303131 | 0.8480852246284485 | 0.43603242249519514 | 29549.33700155131 |
+|single_conversation_withemotion | 0.005846493825725561 | 0.8573451042175293 | 0.4721316954959472 | 2008198.4398578384 |
+|single_conversation_withcontext | 0.005802720584588993 | 0.8359043002128601 | 0.45884515751650373 | 63035.03316265359 |
+|single_conversation_withGPTdata_withoutemotion | **0.006432147502200551** | **0.8576485514640808** | 0.47171387983621627 | **28233.374812001217** |
+|single_conversation_withGPTdata_bs256 | 0.0062091122888948 | 0.48648038506507874 | 0.34519929806969163 | 218114.86185134976 |
 
 
 # Explanation
