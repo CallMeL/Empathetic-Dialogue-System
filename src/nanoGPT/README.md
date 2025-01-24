@@ -25,7 +25,7 @@ We can consider these three Positional Embeddings which are mentioned from the t
     + Instead of encoding the absolute position, focus on the relative distances between tokens in a sequence.
 
 
-| Feature                     | Absolute Positional Embeddings         | Relative Positional Embeddings         | ROPE                                 |
+| Feature                     | Absolute Positional Embeddings  (Default) | Relative Positional Embeddings         | ROPE                                 |
 |-----------------------------|----------------------------------------|----------------------------------------|--------------------------------------|
 | **Position Representation** | Unique absolute position               | Relative distances between positions   | Relative information via rotation    |
 | **Scalability**             | Limited in some fixed implementations  | Generalizable to varying lengths       | Well-suited for long sequences       |
@@ -130,8 +130,8 @@ TODO: Update the evaluation here
 cd ./src/models/nanoGPT
 python evaluation.py
 ```
-
-### Updating Model Checkpoints for Relative Positional Embeddings
+___
+### Additional) Update Model Checkpoints for Relative Positional Embeddings
 
 When introducing **Relative Positional Embeddings** to an existing model, the structure of the model changes, potentially causing compatibility issues when loading old checkpoint files. Specifically, older checkpoints will not contain the new parameter,  `transformer.relative.relative_embeddings.weight`, leading to errors during the loading process.
 
