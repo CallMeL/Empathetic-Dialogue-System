@@ -6,7 +6,7 @@ import traceback
 from contextlib import nullcontext
 import torch
 import tiktoken
-from model import GPTConfig, GPT
+from .model import GPTConfig, GPT
 from huggingface_hub import hf_hub_download
 import shutil
 import re
@@ -86,18 +86,24 @@ def respond(input, samples, model, enable_print = True): # generation function
 
                 output = decode(generated[0].tolist())   
 
+                print("output", output)
+
                 match_botoutput = re.search(r'<human>(.*?)<', output, re.DOTALL)
+                print(match_botoutput, "match_botoutput")
                 match_emotion = re.search(r'<emotion>(.*?)<', output, re.DOTALL)
+                print(match_emotion, "match_emotion")
                 match_context = re.search(r'<context>(.*?)<', output, re.DOTALL)
                 response = ''
                 emotion = ''
                 context = ''
                 if match_botoutput:
+                    print("inside match_botoutput")
                     try :
                         response = match_botoutput.group(1).replace('<endOfText>','')
                     except:
                         response = match_botoutput.group(1)
                 if enable_print:
+                    print('----Debug: Chat response--- ')
                     # if match_context:
                     #     context = match_context.group(1)
                     #     print('Context: '+ context)
@@ -109,6 +115,8 @@ def respond(input, samples, model, enable_print = True): # generation function
                     print('----Debug: Full output--- ')
                     print(output)
 
+                print("response", response)
+                print("emotion", emotion)
                 return response, emotion, context
 
 def return_single_sentence(input_sentences, init_from, print_debug = True):
