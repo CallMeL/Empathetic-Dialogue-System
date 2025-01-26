@@ -114,9 +114,7 @@ def respond(input, samples, model, enable_print = True): # generation function
                         print('Robot: '+response)
                     print('----Debug: Full output--- ')
                     print(output)
-
-                print("response", response)
-                print("emotion", emotion)
+                  
                 return response, emotion, context
 
 def return_single_sentence(input_sentences, init_from, print_debug = True):
