@@ -85,19 +85,13 @@ def respond(input, samples, model, enable_print = True): # generation function
                 generated = model.generate(x, max_new_tokens, temperature=temperature, top_k=top_k)
 
                 output = decode(generated[0].tolist())   
-
-                print("output", output)
-
                 match_botoutput = re.search(r'<human>(.*?)<', output, re.DOTALL)
-                print(match_botoutput, "match_botoutput")
                 match_emotion = re.search(r'<emotion>(.*?)<', output, re.DOTALL)
-                print(match_emotion, "match_emotion")
                 match_context = re.search(r'<context>(.*?)<', output, re.DOTALL)
                 response = ''
                 emotion = ''
                 context = ''
                 if match_botoutput:
-                    print("inside match_botoutput")
                     try :
                         response = match_botoutput.group(1).replace('<endOfText>','')
                     except:
