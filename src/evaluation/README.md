@@ -8,28 +8,27 @@ We use 10% of the gpt-enhanced training data (10% of the 60k)
 ## Results
 
 List of evaluated models:
+- single_conversation
+- single_conversation_rope
+- single_conversation_relative
+- whole_conversation
+- single_conversation_withemotion
+- single_conversation_withcontext
+- single_conversation_withGPTdata_withoutemotion
+- single_conversation_withGPTdata_bs256,
 
-1. single_conversation_withGPTdata_bs256
-2. single_conversation_withGPTdata
-3. single_conversation_withcontext
-4. single_conversation_withemotion
-5. single_conversation_rope
-6. single_conversation_relative
-7. single_conversation
-8. whole_conversation
+**For the big dataset (facebook + gpt data)**
 
-Table with the results of the best performing models for each of the evaluation metrics
-
-| Model                                | BLEU    | Bert (F1) | GLUE     | Perplexity   |
-|--------------------------------------|---------|-----------|----------|--------------|
-| single_conversation_withGPTdata_bs256| 0.006209| 0.486480  | 0.345199 | 218114.8618  |
-| single_conversation_withGPTdata      | **0.006432** | **0.857648**  | 0.471738 | 28233.3748   |
-| single_conversation_withcontext      | 0.005803| 0.835904  | 0.458845 | 63035.0331   |
-| single_conversation_withemotion      | 0.005846| 0.857451  | **0.4721316** | 2008198.439  |
-| single_conversation_rope             |         |           |          |              |
-| single_conversation_relative         |          |          |          |           |
-| single_conversation                  | 0.005874| 0.8568010 | 0.4727166| 84066.9524   |
-| whole_conversation                   | 0.005539| 0.848085  | 0.4360324| 29549.33700  |
+| Model     | BLEU | Bert F1 |  GLUE | Perplexity |
+|--------------------|---------------------|---------------------|---------------------|---------------------|
+|single_conversation| 0.00587468362062949 | 0.8568010926246643 | **0.4727166374195705** | 84066.95248548205 |
+|single_conversation_rope |0.005886990900708465|0.48094046115875244|0.32974011865964736|3776063.144329027|
+|single_conversation_relative |0.005992347214885741|0.36667502297986126|0.32974011865964736|inf|
+|whole_conversation | 0.005539267542303131 | 0.8480852246284485 | 0.43603242249519514 | 29549.33700155131 |
+|single_conversation_withemotion | 0.005846493825725561 | 0.8573451042175293 | 0.4721316954959472 | 2008198.4398578384 |
+|single_conversation_withcontext | 0.005802720584588993 | 0.8359043002128601 | 0.45884515751650373 | 63035.03316265359 |
+|single_conversation_withGPTdata_withoutemotion | **0.006432147502200551** | **0.8576485514640808** | 0.47171387983621627 | **28233.374812001217** |
+|single_conversation_withGPTdata_bs256 | 0.0062091122888948 | 0.48648038506507874 | 0.34519929806969163 | 218114.86185134976 |
 
 
 # Explanation

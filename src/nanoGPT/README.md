@@ -41,7 +41,7 @@ We can consider these three Positional Embeddings which are mentioned from the t
     + Instead of encoding the absolute position, focus on the relative distances between tokens in a sequence.
 
 
-| Feature                     | Absolute Positional Embeddings         | Relative Positional Embeddings         | ROPE                                 |
+| Feature                     | Absolute Positional Embeddings  (Default) | Relative Positional Embeddings         | ROPE                                 |
 |-----------------------------|----------------------------------------|----------------------------------------|--------------------------------------|
 | **Position Representation** | Unique absolute position               | Relative distances between positions   | Relative information via rotation    |
 | **Scalability**             | Limited in some fixed implementations  | Generalizable to varying lengths       | Well-suited for long sequences       |
