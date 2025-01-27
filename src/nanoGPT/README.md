@@ -9,8 +9,8 @@ python prepare.py  # Enter the dataset path, default is emotion/with_gpt_data/wi
 cd ../src/nanoGPT
 
 time python train.py \
-  --data_dir=data/emotion/with_gpt_data/ \ # change the dir based on where the bin file is
-  --device=cpu \ #mps for macbook
+  --data_dir=data/emotion/with_gpt_data/ \
+  --device=cpu \
 
 # enter control+c to stop the training process, a pt file will be saved under `out` file
 python chat.py /Project-ML/src/nanoGPT/out/ckpt.pt #copy the absolute path of the out file
