@@ -94,7 +94,6 @@ BERTScore Recall: 0.9777
 BERTScore F1: 0.977
 ```
 
-
 ### 3.3. Perplexity
 - Quantifies the language model'S "surprise" 😮 for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
 - Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
@@ -122,8 +121,6 @@ More information about the different subsets of the GLUE dataset can be found on
 
 The metrics we use : bhadresh-savani/distilbert-base-uncased-emotion. Supported Classes: Joy, Anger, Sadness, Fear, Surprise, Love, Neutral
 **SST-2** (Standfrod Sentiment Treebank 2)  Classifying a sentence as having positive or negative sentiment
-
-## Overall Observations
 
 ## Conclusion
 
