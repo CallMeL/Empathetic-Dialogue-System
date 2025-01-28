@@ -56,11 +56,15 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 
 ### 3.1. BLEU (Bilingual Evaluation Understudy)
 
-- Measures **n-gram overlap** between reference text and model-generated text
+- Measures **n-gram overlap** between reference text and model-generated text.
 - **Limitation:** Cannot capture long-range dependencies, reordering, or more nuanced semantic elements. 
 - BLEU typically ranges from 0 to 1, where:
     - O indicates no overlap at all between the model output and the reference
     - 1 indicates a perfect overlap, the generated text is identical to the reference in terms of n-grams
+- Doesn't evaluate if the sequence as a whole makes sense and if it is emotionally aligned with the input
+- BLEU does not require a language model because directly compares n-grams (word sequences) between the generated output and reference sentences to assess similarity. It doesn’t rely on the probability distribution of words but rather on the overlap of word sequences.
+
+
 - **Example**
     ```
     Reference: "I feel very sad today"
@@ -70,71 +74,15 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 
 ### 3.2. BERTScore
 - Use **contextual embeddings** (e.g. BERT, RoBERTA to assess semantic similarity between generated text and referece)
-
-
-
-### 3.3. Perplexity
-- Quantifies the language model'S "surprise" for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
-- Model-dependent: the underlying language model affects perplexity calculation
-- **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
-
-### 3.4. GLUE (General Language Understanding Evaluation)
-- A **benchmark**
-
-## Overall Observations
-
-## Conclusion
-- **Metric Insigths**:
-    - BLEU is simplistic for an empathetic dialogue system
-    - BERTTScore and GLUE measure deeper semantic alignment
-    - Perplexity reflects model confidence bue doesn't guarantee correctness
-    - For deeper insight into relevance, coherente, and empathy, we could think of **human evaluation**.
-
-
-```BERT```
 - How BERTScore solves the problem of the BLEUScore: 
 
-    For instance, the BLEU score is not severely affected if the phrases are switched from “A because B” to “B because A”, especially when A and B are long phrases. BERTScore’s contextual embeddings are trained to recognize order and deal with distant dependencies present in the text.
+    For instance, the BLEU score is not severely affected if the phrases are switched from “A because B” to “B because A”, especially when A and B are long phrases. 
+    BERTScore's contextual embeddings are trained to recognize order and deal with distant dependencies present in the text.
 
 - In BERTScore, the similarity between two sentences is computed as the sum of the cosine similarities between their token embeddings.
 
-```Perplexity```
-
-
-
-```Overall```
-The model **single_conversation_withGPTdata_withoutemotion** performs the best in all evaluation metrics besides GLUE.
-
-
-
-
-# Explanation
-## AVG BLEU: average of BLEU-1, -2, -3, -4
-
-BLEU : Bilingual Evaluation Understudy focuses on n-gram overlap which works well for machine translation tasks but poorly captures the empathy of a response
-
-It does not account for long-range dependencies (sequence context)
-
-Doesn't evaluate if the sequence as a whole makes sense and if it is emotionally aligned with the input
-
-BLEU does not require a language model because directly compares n-grams (word sequences) between the generated output and reference sentences to assess similarity. It doesn’t rely on the probability distribution of words but rather on the overlap of word sequences.
-
-
-**Example:**
-```
-Reference 1: I feel very sad today
-Model Output: I feel very happy today
-BLEU Score: 0.29
-```
-
-## Perplexity 
-It quantifies the model's "surprise" 😮 when encountering new data. Calculates the probability of a sentence under a specific language model.
-
-Values range from 0-1. Lower surprise indicates better prediction accuracy.
-
-Model-Dependent: Different language models may assign different probabilities to the same sentence, resulting in different perplexity scores.
-
-Problem: A model might display low perplexity while maintaining a high error rate, indicating overconfidence in incorrect predictions
+![BERT Score illustration](BERTScore_illustration.png)
+Source: [link](https://arxiv.org/pdf/1904.09675)
 
 **Example**
 ```
@@ -145,19 +93,13 @@ BERTScore Recall: 0.9777
 BERTScore F1: 0.977
 ```
 
-## BERTScore
-Another evaluation metrics possibility
-Uses contextual embeddings from BERT to measure the semantic similarity between the generated response and the reference.
 
-More robust for open-domain tasks and captures semantic and contextual alignment.
+### 3.3. Perplexity
+- Quantifies the language model'S "surprise" 😮 for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
+- Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
+- **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
 
-BERTScore compares outputs like BLEU, but it uses a pre-trained model’s embeddings (e.g. BERT or RoBERTa) to perform the comparison. It does not evaluate the model’s performance internally (as perplexity does).
-
-![BERT Score illustration](BERTScore_illustration.png)
-Source: [link](https://arxiv.org/pdf/1904.09675)
-
-
-## GLUE
+### 3.4. GLUE (General Language Understanding Evaluation)
 GLUE, also known as General Language Understanding Evaluation, is an evaluation benchmark designed to measure the performance of language understanding models in a range of natural language processing (NLP) tasks.
 
 GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank 2. Sentiment classification (positive or negative) of sentences.
@@ -176,6 +118,23 @@ More information about the different subsets of the GLUE dataset can be found on
 
 The metrics we use : bhadresh-savani/distilbert-base-uncased-emotion. Supported Classes: Joy, Anger, Sadness, Fear, Surprise, Love, Neutral
 **SST-2** (Standfrod Sentiment Treebank 2)  Classifying a sentence as having positive or negative sentiment
+
+## Overall Observations
+
+## Conclusion
+
+The model **single_conversation_withGPTdata_withoutemotion** performs the best in all evaluation metrics besides GLUE.
+
+- **Metric Insigths**:
+The evaluation highlights the strengths and limitations of each metric:
+- **BLEU** offers a quick n-gram overlap assessment but lacks depth in semantic evaluation, necessary for an empathetic dialogue system
+- **BERTScore** provides a deeper look at semantic similarities.
+- **Perplexity** offers insights into model confidence but not necessarily semantic correctness.
+- **GLUE** provides a comprehensive benchmark across multiple linguistic tasks.
+
+For deeper insight into relevance, coherente, and empathy, we could think of **human evaluation**.
+
+
 
 
 
