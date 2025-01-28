@@ -1,10 +1,26 @@
 # NanoGPT
 Code mainly taken from: [nanoGPT](https://github.com/karpathy/nanoGPT)
+## A quick cheat sheet to run the code
+(make sure the environment is setup, i.e `PYTHONPATH`)
+```
+cd data
+python prepare.py  # Enter the dataset path, default is emotion/with_gpt_data/with_gpt_data.txt
+
+cd ../src/nanoGPT
+
+time python train.py \
+  --data_dir=data/emotion/with_gpt_data/ \
+  --device=cpu \
+
+# enter control+c to stop the training process, a pt file will be saved under `out` file
+python chat.py /Project-ML/src/nanoGPT/out/ckpt.pt #copy the absolute path of the out file
+
+```
 ## The architecture of nanoGPT
 NanoGPT is a **decoder-only** transformer based language model. Based on the architecture, each subsection contains essential conception to understand how nanoGPT works.
 ### Encode the input text
 * Encoder takes a string and output a list of integers. 
-* It is done in the preparation phase ([`prepare.py`](https://github.com/CallMeL/Project-ML/blob/master/data/prepare.py), will get `.bin` files for training and testing.
+* It is done in the preparation phase [`prepare.py`](https://github.com/CallMeL/Project-ML/blob/master/data/prepare.py), will get `.bin` files for training and testing.
 * In the code the [tiktoken](https://github.com/openai/tiktoken) from openAI is used.
 ### Embeddings
 1. Token embeddings: represent words in matrix
@@ -125,13 +141,9 @@ python chat.py block_size=256/singleConversation_withGPTdata
 ```
 
 ###  Evaluate nanoGPT
-TODO: Update the evaluation here
-```
-cd ./src/models/nanoGPT
-python evaluation.py
-```
-___
-### Additional) Update Model Checkpoints for Relative Positional Embeddings
+check src/evaluation/evaluation.ipynb for details.
+
+### Updating Model Checkpoints for Relative Positional Embeddings
 
 When introducing **Relative Positional Embeddings** to an existing model, the structure of the model changes, potentially causing compatibility issues when loading old checkpoint files. Specifically, older checkpoints will not contain the new parameter,  `transformer.relative.relative_embeddings.weight`, leading to errors during the loading process.
 

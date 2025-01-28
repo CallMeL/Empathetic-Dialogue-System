@@ -12,8 +12,7 @@ if __name__ == "__main__":
     print(f"Current absolute path: {current_path}")
     # Change the path to the dataset
     folder_path = input(
-        "Enter the dataset name (default: "
-        "'emotion/with_gpt_data/with_gpt_data.txt'): ").strip()
+        "Enter the dataset name (default: ""'emotion/with_gpt_data/with_gpt_data.txt'): ").strip()
     if not folder_path:
         folder_path = 'emotion/with_gpt_data/with_gpt_data.txt'
     directory_path = os.path.dirname(folder_path)
