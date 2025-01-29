@@ -1,6 +1,6 @@
 
 # Evaluation
-The **evaluation.ipynb** notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
+The **evaluation.ipynb** notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria.
 
 ## 1. Data Explanation
 The table below describes the different data sources and the corresponding models that were trained on them:
@@ -14,31 +14,7 @@ The table below describes the different data sources and the corresponding model
 | with_gpt_data                 | Under `with_gpt_data` folder.  <br /> Based on  the question in 59k_eachconv_eot, we generated  the answer from ChatGPT 4omini, therefore we have 118k pairs of conversation               | single_conversation_withGPTdata_bs256, single_conversation_withGPTdata_withoutemotion |
 
 ## 2. Results
-Below are the tables summarizing the scores for each model/evaluation metric combination. The models evaluated are:
-- single_conversation
-- single_conversation_rope
-- single_conversation_relative
-- whole_conversation
-- single_conversation_withemotion
-- single_conversation_withcontext
-- single_conversation_withGPTdata_withoutemotion
-- single_conversation_withGPTdata_bs256
-
-### 2.1. Small Dataset (Facebook Only)
-
-| Model     | AVG(BLEU) | Bert F1 |  GLUE | Perplexity |
-|--------------------|---------------------|---------------------|---------------------|---------------------|
-|single_conversation | 0.006294341508914749 | 0.8573648929595947 | 0.51 | 2864.188433546633 |
-|single_conversation_rope | 0.006449718067498683 |0.5237810611724854|0.36|138019.7266265564|
-|single_conversation_relative | 0.006187011514139771|0.8079032897949219|0.42| 44209813.24339561|
-|whole_conversation | 0.005549381274013914 | 0.7825521230697632 | 0.4 | X |
-|single_conversation_withemotion | 0.005371129646648176 | **0.8595598340034485** | **0.54** | 937750.794195298 |
-|single_conversation_withcontext | 0.0056097142272521225 | 0.8526116013526917 | 0.42 | **2825.1275006949722** |
-|single_conversation_withGPTdata_withoutemotion | 0.006452090556086916 | 0.8585449457168579 | 0.48 | 7074.3668454626595 |
-|single_conversation_withGPTdata_bs256 | **0.00661592114219667**| 0.5561996102333069 | 0.35 | 24069.64634160262 |
-
-
-### 2.2. Large Dataset (Facebook + GPT)
+The tables below summarize the scores for each model/evaluation metric combination:
 
 | Model                                            | AVG(BLEU)              | BLEU-1                | BLEU-2                 | BLEU-3               | BLEU-4               | Bert F1            | GLUE                  | Perplexity          |
 |--------------------------------------------------|------------------------|----------------------|------------------------|----------------------|----------------------|--------------------|-----------------------|---------------------|
@@ -61,7 +37,7 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 - BLEU typically ranges from 0 to 1, where:
     - O indicates no overlap at all between the model output and the reference
     - 1 indicates a perfect overlap, the generated text is identical to the reference in terms of n-grams
-- Doesn't evaluate if the sequence as a whole makes sense and if it is emotionally aligned with the input
+- Does not evaluate if the sequence as a whole makes sense and if it is emotionally aligned with the input
 - BLEU does not require a language model because directly compares n-grams (word sequences) between the generated output and reference sentences to assess similarity. It doesn’t rely on the probability distribution of words but rather on the overlap of word sequences.
 
 **BLEU-1**
@@ -131,17 +107,15 @@ BERTScore Recall: 0.9777
 BERTScore F1: 0.977
 ```
 
-### 3.3. Perplexity
-- Quantifies the language model'S "surprise" 😮 for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
-- Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
-- **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
-
-### 3.4. GLUE (General Language Understanding Evaluation)
+### 3.3. GLUE (General Language Understanding Evaluation)
 GLUE, also known as General Language Understanding Evaluation, is an evaluation benchmark designed to measure the performance of language understanding models in a range of natural language processing (NLP) tasks.
 
 GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank 2. Sentiment classification (positive or negative) of sentences.
 
 Compares model-generated sentiments against reference sentiments for a dataset. In our pipeline we used an **emotion classifier** that uses the model bhadresh-savani/distilbert-base-uncased-emotion from Hugging Face’s Transformers library. 
+
+Limitations: Can be misleading in cases of class imbalance. For instance, if 90% of the data are positive, a model that naively predicts ‘positive’ for all inputs would achieve 90% accuracy, which doesn’t necessarily reflect true predictive performance.
+
 
 **How to use**
 
@@ -155,6 +129,14 @@ More information about the different subsets of the GLUE dataset can be found on
 
 The metrics we use : bhadresh-savani/distilbert-base-uncased-emotion. Supported Classes: Joy, Anger, Sadness, Fear, Surprise, Love, Neutral
 **SST-2** (Standfrod Sentiment Treebank 2)  Classifying a sentence as having positive or negative sentiment
+
+
+- 'sst2' main evaluation metric is accuracy (Number of correct predictions/ Total number of predictions).
+
+### 3.4. Perplexity
+- Quantifies the language model'S "surprise" 😮 for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
+- Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
+- **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
 
 ## Conclusion
 
