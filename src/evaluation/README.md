@@ -134,7 +134,7 @@ The metrics we use : bhadresh-savani/distilbert-base-uncased-emotion. Supported 
 - 'sst2' main evaluation metric is accuracy (Number of correct predictions/ Total number of predictions).
 
 ### 3.4. Perplexity
-- Quantifies the language model'S "surprise" 😮 for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
+- Quantifies the language model's "surprise" for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
 - Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
 - **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
 
