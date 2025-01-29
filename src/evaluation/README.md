@@ -1,11 +1,8 @@
 
 # Evaluation
-The **evaluation.ipynb** notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria.
+The evaluation.ipynb notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
 
-## 1. Data Explanation
-We use 10% of the gpt-enhanced training data (10% of the 60k).
-The table below describes the different data sources and the corresponding models that were trained on them:
-
+## Explanation of the Data
 | Data   | Description                                                                                                                                                                                | Trained Model                              |
 | :---------------------------- |:--------------------------|-----------------|
 | 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               |single_conversation, <br/> single_conversation_rope,  <br/>single_conversation_relative  |
