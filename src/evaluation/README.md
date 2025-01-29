@@ -75,12 +75,23 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 
 ### 3.2. BERTScore
 - Use **contextual embeddings** (e.g. BERT, RoBERTA to assess semantic similarity between generated text and referece)
+
+    We used 'roberta-large' trained on 160GB of text. relies only on MLM (Masked Language Model) for pretraining
 - How BERTScore solves the problem of the BLEUScore: 
 
     For instance, the BLEU score is not severely affected if the phrases are switched from “A because B” to “B because A”, especially when A and B are long phrases. 
     BERTScore's contextual embeddings are trained to recognize order and deal with distant dependencies present in the text.
 
 - In BERTScore, the similarity between two sentences is computed as the sum of the cosine similarities between their token embeddings.
+    Cosine similarity measures the cosine of the angle between two vectors in a multi-dimensional space (in this case, the embedding vectors), providing a value between -1 and 1. A score of 1 indicates identical directionality (and thus, maximum similarity), while -1 indicates completely opposite directionality.
+
+- **BERTScore is a measure of orientation and not magnitude**: In natural language processing (NLP), using cosine similarity allows systems to ignore how frequently certain words appear (their vector length) and instead focus on their directionality in semantic space (their meaning in context). For instance, the words “cold” and “chilly” might be represented by vectors of different magnitudes depending on how commonly they appear in a dataset, but their directions would be similar because they have similar meanings.
+
+**Precision**: This measure reflects how much of the candidate text is covered by the reference text. For each token in the candidate text, BERTScore selects the highest cosine similarity score among all reference tokens (greedy matching).
+**Recall**: This measure reflects how much of the reference text is covered by the candidate text.
+**F1 Score**: The F1 score is particularly useful because it accounts for both the precision and recall of the evaluation, providing a more balanced assessment of similarity.
+
+
 
 ![BERT Score illustration](BERTScore_illustration.png)
 Source: [link](https://arxiv.org/pdf/1904.09675)
