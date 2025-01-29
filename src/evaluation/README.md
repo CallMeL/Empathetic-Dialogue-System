@@ -56,7 +56,7 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 
 ### 3.1. BLEU (Bilingual Evaluation Understudy)
 
-- Measures **n-gram overlap** between reference text and model-generated text.
+- Measures **n-gram overlap** (unigrams (BLEU-1), bigrams (BLEU-2), trigrams (BLEU-3), and 4-grams (BLEU-4) )between reference text and model-generated text.
 - **Limitation:** Cannot capture long-range dependencies, reordering, or more nuanced semantic elements. 
 - BLEU typically ranges from 0 to 1, where:
     - O indicates no overlap at all between the model output and the reference
@@ -64,27 +64,54 @@ Below are the tables summarizing the scores for each model/evaluation metric com
 - Doesn't evaluate if the sequence as a whole makes sense and if it is emotionally aligned with the input
 - BLEU does not require a language model because directly compares n-grams (word sequences) between the generated output and reference sentences to assess similarity. It doesn’t rely on the probability distribution of words but rather on the overlap of word sequences.
 
+**BLEU-1**
+```
+Candidate: "the the the the the the the"
+Reference: "The cat is on the mat"
+```
+Precision: 2/7
 
-- **Example**
-    ```
-    Reference: "I feel very sad today"
-    Model Output: "I feel very happy today"
-    BLEU Score: 0.290
-    ```
+**BLEU-2**
+```
+Candidate: "The quick brown fox"
+Reference: "A quick brown fox"
+```
+Bigrams: ["The quick", "quick brown", "brown fox"]
+Matches: "quick brown", "brown fox"
+Precision: 2/3
+
+**BLEU-3**
+```
+Candidate: "The quick brown fox"
+Reference: "A quick brown fox jumps"
+```
+Trigrams: ["The quick brown", "quick brown fox"]
+Matches: "quick brown fox" 
+Precision: 1/2
+
+**BLEU-4**
+```
+Candidate: "The quick brown fox"
+Reference: "A quick brown fox jumps over"
+```
+Four-grams: ["The quick brown fox"]
+Precision: 0
 
 ### 3.2. BERTScore
 - Use **contextual embeddings** (e.g. BERT, RoBERTA to assess semantic similarity between generated text and referece)
 
     We used 'roberta-large' trained on 160GB of text. relies only on MLM (Masked Language Model) for pretraining
+
 - How BERTScore solves the problem of the BLEUScore: 
 
-    For instance, the BLEU score is not severely affected if the phrases are switched from “A because B” to “B because A”, especially when A and B are long phrases. 
-    BERTScore's contextual embeddings are trained to recognize order and deal with distant dependencies present in the text.
+    For instance, the BLEU score is not severely affected if the phrases are switched from “A because B” to “B because A”, especially when A and B are long phrases. BERTScore's contextual embeddings are trained to recognize order and deal with distant dependencies present in the text.
 
 - In BERTScore, the similarity between two sentences is computed as the sum of the cosine similarities between their token embeddings.
     Cosine similarity measures the cosine of the angle between two vectors in a multi-dimensional space (in this case, the embedding vectors), providing a value between -1 and 1. A score of 1 indicates identical directionality (and thus, maximum similarity), while -1 indicates completely opposite directionality.
 
 - **BERTScore is a measure of orientation and not magnitude**: In natural language processing (NLP), using cosine similarity allows systems to ignore how frequently certain words appear (their vector length) and instead focus on their directionality in semantic space (their meaning in context). For instance, the words “cold” and “chilly” might be represented by vectors of different magnitudes depending on how commonly they appear in a dataset, but their directions would be similar because they have similar meanings.
+
+- Traditional metrics often fail to recognize paraphrases that preserve meaning but differ in wording. BERTScore addresses this by using BERT’s deep contextualized embeddings, which are better at capturing paraphrastic variations.
 
 **Precision**: This measure reflects how much of the candidate text is covered by the reference text. For each token in the candidate text, BERTScore selects the highest cosine similarity score among all reference tokens (greedy matching).
 **Recall**: This measure reflects how much of the reference text is covered by the candidate text.
