@@ -1,7 +1,7 @@
 # Empathetic Dialogue System
 ## About this project
 This is a project we developed for the course "Efficient Methods in Machine Learning" at University Hamburg. 
-In this project, we trained a small language model from scratch in our local machine (Mostly Apple M1 Pro). We experiment the training with different data, and evaluate and compare the results with BLUE, BertScore, GLEU and Perplexity. 
+In this project, we trained a small language model from scratch in our local machine (Mostly Apple M1 Pro). We experiment the training with different data, and evaluate and compare the results with BLEU, BertScore, GLUE and Perplexity. 
 ![pipeline for the project](./doc/imgs/pipeline.jpg)
 ### The model
 Our model is [nanoGPT](https://github.com/karpathy/nanoGPT). We experimented with different position embeddings (ROPE, Relative Positional Embedding, Absolute Positional Embeddings). 
