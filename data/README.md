@@ -28,16 +28,27 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 **3. Remove Improper Elements and Handling Missing Values**
    + There are improper elements such as those containing only numbers, so filter them out if they are less than **3 characters** long, and also remove any missing values.
    + Now we have **59,835** data
-  
-**4. Remove stopwords**
 
-**_Repeated sentencess_**
+**_4. Repeated conversation**
 + We noticed that the data was repeating itself, with the customer and agent switching each other
-   + e.g. In this table, you can see that the input (empathetic dialogues) in rows 3 and 4 are exactly the same as the output (labels) in rows 0 and 1, and the outputs of these are exactly the same as the inputs in rows 1 and 2.
-+ WE DECIDED NOT TO DELETE THEM
-   
+  + e.g. In this table, you can see that the output (labels) from Conv1 and the input (empathetic dialogues) from Conv2 are reused to form a new conversation pair in the Repeated conversation.
 
-###  Final Results of the data
+      |   | empathetic_dialogues (desired input)                                                                                     | labels (desired output)                                      |
+      |---|--------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
+      | Conv 1  | I remember going to see the fireworks with my best friend. It was the first time we ever spent time alone together. Although there were many people, we felt like the only people in the world. | **Was this a friend you were in love with, or just a best friend?** |
+      | Conv 2  | **This was a best friend. I miss her.**                                                                                   | Where has she gone?                                         |
+      | Repeated Conv | Was this a friend you were in love with, or just a best friend?                                                           | This was a best friend. I miss her.                         |
++ We chose to treat them as a form of data augmentation, **deciding to retain them**, as they might contribute to a more nuanced understanding of dialogue by the model. The total number of such instances was found to be 40,779.
+
+**_5. Remove stopwords_**
++ We applied a stopword removal process to the dataset for natural language processing. + However, this processed data was not used in the model training, as the model needed to learn the natural structure of sentences.
++ Instead, it was utilized later during the data analysis phase, specifically for word analysis within our dataset
+
+| Situation                                                                                                  | Emotion    | Empathetic_dialogues                                                    | Labels                          | Cleaned_input                | Cleaned_output            |
+|------------------------------------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------|---------------------------------|------------------------------|---------------------------|
+| I remember going to the fireworks with my best friend. There was a lot of people, but it only felt like us in the world. | sentimental | Was this a friend you were in love with, or just a best friend?          | This was a best friend. I miss her. | friend love best friend       | best friend miss          |
+
+### Final Results of the data
 |  | **empathetic_dialogues** | **labels** |
 |---|:---:|:---:|
 | 0 | I remember going to see the fireworks with my best friend. It was the first time we ever spent time alone together. Although there was a lot of people, we felt like the only people in the world. | Was this a friend you were in love with, or just a best friend? |
@@ -45,6 +56,7 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 | 2 | We no longer talk. | Oh was this something that happened because of an argument? |
 | 3 | Was this a friend you were in love with, or just a best friend? | This was a best friend. I miss her. |
 | 4 | Where has she gone? | We no longer talk. |
+
 
 ## Exploratory Data Analysis (EDA)
 **1. Length Analysis**
@@ -66,7 +78,6 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
      - For input (user's utterance), it would be beneficial for the data to have more values closer to -1 or 1 for model training. Unfortunately, most of the data is clustered around 0. Therefore, generating more emotionally charged utterances using LLMs like ChatGPT might be a good approach.  
      - For output (model's response), the data is primarily distributed between 0 and 1, which seems desirable.  
      - Since we have sentiment data in our dataset, we plan to verify the accuracy of this analysis by comparing them.
-
 
 ## The training data format
 We generate txt files from the csv file in `data2txt.ipynb`, and then generate 
