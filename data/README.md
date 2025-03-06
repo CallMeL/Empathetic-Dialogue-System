@@ -4,7 +4,7 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 ## Source of data
 `emotion-emotion_69k.csv` is downloded from the [Empathetic Dialogues (Facebook AI) 25k](https://www.kaggle.com/datasets/atharvjairath/empathetic-dialogues-facebook-ai/data). There are about 50 misplaced data, we just deleted the wrong raws.
 
-### Data structure
+## Data structure
 + The number of data: 64,594
 + We have 4 columns
    + **Situation**: Describes the theme or concept of the conversation.
@@ -29,7 +29,7 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
    + There are improper elements such as those containing only numbers, so filter them out if they are less than **3 characters** long, and also remove any missing values.
    + Now we have **59,835** data
 
-**_4. Repeated conversation**
+**_4. Handle repeated conversations_**
 + We noticed that the data was repeating itself, with the customer and agent switching each other
   + e.g. In this table, you can see that the output (labels) from Conv1 and the input (empathetic dialogues) from Conv2 are reused to form a new conversation pair in the Repeated conversation.
 
@@ -41,14 +41,15 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 + We chose to treat them as a form of data augmentation, **deciding to retain them**, as they might contribute to a more nuanced understanding of dialogue by the model. The total number of such instances was found to be 40,779.
 
 **_5. Remove stopwords_**
-+ We applied a stopword removal process to the dataset for natural language processing. + However, this processed data was not used in the model training, as the model needed to learn the natural structure of sentences.
++ We applied a stopword removal process to the dataset for natural language processing.
++ However, this processed data was not used in the model training, as the model needed to learn the natural structure of sentences.
 + Instead, it was utilized later during the data analysis phase, specifically for word analysis within our dataset
 
 | Situation                                                                                                  | Emotion    | Empathetic_dialogues                                                    | Labels                          | Cleaned_input                | Cleaned_output            |
 |------------------------------------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------|---------------------------------|------------------------------|---------------------------|
 | I remember going to the fireworks with my best friend. There was a lot of people, but it only felt like us in the world. | sentimental | Was this a friend you were in love with, or just a best friend?          | This was a best friend. I miss her. | friend love best friend       | best friend miss          |
 
-### Final Results of the data
+## Final Results of the data
 |  | **empathetic_dialogues** | **labels** |
 |---|:---:|:---:|
 | 0 | I remember going to see the fireworks with my best friend. It was the first time we ever spent time alone together. Although there was a lot of people, we felt like the only people in the world. | Was this a friend you were in love with, or just a best friend? |
@@ -56,7 +57,6 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 | 2 | We no longer talk. | Oh was this something that happened because of an argument? |
 | 3 | Was this a friend you were in love with, or just a best friend? | This was a best friend. I miss her. |
 | 4 | Where has she gone? | We no longer talk. |
-
 
 ## Exploratory Data Analysis (EDA)
 **1. Length Analysis**
