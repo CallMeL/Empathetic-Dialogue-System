@@ -59,25 +59,57 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 | 4 | Where has she gone? | We no longer talk. |
 
 ## Exploratory Data Analysis (EDA)
-**1. Length Analysis**
-   + analysed the length of each input (empathetic_dialogues) and output (labels) sentence
+### Sentence-Level Analysis
+**1. Sentence Length Analysis**
+   + We analysed the length of each input (empathetic_dialogues) and output (labels) sentence
    + Average and Median Sentence Length by Character Count
         |  | empathetic_dialogues | labels |
         |---|:---:|:---:|
-        | Mean | 68.28 | 62.85 |
+        | Mean | 68.00 | 62.68 |
         | Median | 59.0 | 54 |
- 
-**2. Data analysis (input and output)**
-   - **A. LDA for word clustering**  
-     - Conducted word clustering using LDA.  
-     - However, the words were not grouped based on emotions.  
-     - Further thought is needed on how to interpret this result.
+   + Examples of sentences with lengths close to the average are as follows:
+     + Input (empathetic_dialogues) 
+        + Got rejected from a place I wanted to work, not once but three times
+        + I just really wanted some ice cream! Now I know their hours, though.
+        + I do sales work, but he always lies to us and takes our bonus money.
+        + Yeah, thank you! at which situation did you feel hope for your life?
+        + I hear ya.. I hope you find one soon... wishing you all of the best!
+      + Output (labels)
+        + Was this a friend you were in love with, or just a best friend?
+        + The grass makes me itchy, But the shower afterward feels great.
+        + I still took it since it was late but I rode in the front seat.
+        + Oh no... were they relaxed about it or did it cause a problem? 
+        + That's really considerate of you. Do they need your help a lot?
 
-   - **B. Sentiment Analysis**  
-     - Values closer to -1 indicate negative sentiment, 0 represents neutral, and values closer to 1 indicate positive sentiment.  
-     - For input (user's utterance), it would be beneficial for the data to have more values closer to -1 or 1 for model training. Unfortunately, most of the data is clustered around 0. Therefore, generating more emotionally charged utterances using LLMs like ChatGPT might be a good approach.  
-     - For output (model's response), the data is primarily distributed between 0 and 1, which seems desirable.  
-     - Since we have sentiment data in our dataset, we plan to verify the accuracy of this analysis by comparing them.
+**2. Sentiment Analysis**  
+- Utilized the `all-MiniLM-L6-v2` model from `SentenceTransformer` to convert each sentence into a vector representation and measured the similarity between these vectors using cosine similarity.
+- Values closer to -1 indicate negative sentiment, 0 represents neutral, and values closer to 1 indicate positive sentiment.  
+- Results
+  - For the input dataset (empathetic_dialogues), the majority of similarity scores ranged between 0 and 0.3, indicating that most sentences exhibited weak similarity. Additionally, similarity scores exceeding 0.5 were extremely rare, suggesting that highly related sentences were relatively uncommon. 
+  - For the output (model's response), 
+
+
+### Word-Level Analysis
+**1. Vocabulary Size** 
++ We calculated the vocabulary size for both the input and output sentences after removing stop words.
++ Results
+  + Input (empathetic_dialogues)
+    + The vocabulary size: 18,273
+    + The most frequently occurring 5 words:  "im", "really", "thats", "get", "like"
+  + Output (labels)
+    + The vocabulary size: 17,744
+    + The most frequently occurring 5 words: "thats", "good", "im", "oh", and "like"
+
+**2. LDA for word clustering** 
+- Conducted word clustering using LDA.  
+- However, the words were not grouped based on emotions.  
+- Further thought is needed on how to interpret this result.
+
+**3. Wordcloud**  
+
+
+
+____
 
 ## The training data format
 We generate txt files from the csv file in `data2txt.ipynb`, and then generate 
