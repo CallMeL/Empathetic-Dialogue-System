@@ -100,12 +100,9 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
     + The vocabulary size: 17,744
     + The most frequently occurring 5 words: "thats", "good", "im", "oh", and "like"
 
-**2. LDA for word clustering** 
-- Conducted word clustering using LDA.  
-- However, the words were not grouped based on emotions.  
-- Further thought is needed on how to interpret this result.
-
-**3. Wordcloud**  
+**2. LDA(Latent Dirichlet Allocation)** 
+- 분석
+- Wordcloud
 
 
 
