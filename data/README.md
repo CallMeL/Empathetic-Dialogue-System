@@ -105,9 +105,10 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
     + The most frequently occurring 5 words: "thats", "good", "im", "oh", and "like"
 
 **2. LDA(Latent Dirichlet Allocation)** 
-- 분석
-- Wordcloud
-
+- Latent Dirichlet Allocation (LDA) topic modeling technique
+  - classify textual data into latent topics.
+  - a model that analyzes the distribution of words within documents, assuming that each document is composed of multiple topics and learning the probability distribution of words for each topic 
+- Through this, we confirmed that the main topics consist of words related to expressing emotions (e.g., feel, good, great, bad) and showing empathy (e.g., oh, really, sorry).
 
 
 ____
