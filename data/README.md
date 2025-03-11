@@ -61,32 +61,36 @@ _Check ```EDA/69kdataset.ipynb``` for better understanding_
 ## Exploratory Data Analysis (EDA)
 ### Sentence-Level Analysis
 **1. Sentence Length Analysis**
-   + We analysed the length of each input (empathetic_dialogues) and output (labels) sentence
-   + Average and Median Sentence Length by Character Count
-        |  | empathetic_dialogues | labels |
-        |---|:---:|:---:|
-        | Mean | 68.00 | 62.68 |
-        | Median | 59.0 | 54 |
-   + Examples of sentences with lengths close to the average are as follows:
-     + Input (empathetic_dialogues) 
-        + Got rejected from a place I wanted to work, not once but three times
-        + I just really wanted some ice cream! Now I know their hours, though.
-        + I do sales work, but he always lies to us and takes our bonus money.
-        + Yeah, thank you! at which situation did you feel hope for your life?
-        + I hear ya.. I hope you find one soon... wishing you all of the best!
-      + Output (labels)
-        + Was this a friend you were in love with, or just a best friend?
-        + The grass makes me itchy, But the shower afterward feels great.
-        + I still took it since it was late but I rode in the front seat.
-        + Oh no... were they relaxed about it or did it cause a problem? 
-        + That's really considerate of you. Do they need your help a lot?
+ + We analysed the length of each input (empathetic_dialogues) and output (labels) sentence
+ + Average and Median Sentence Length by Character Count
+      |  | empathetic_dialogues | labels |
+      |---|:---:|:---:|
+      | Mean | 68.00 | 62.68 |
+      | Median | 59.0 | 54 |
+ + Examples of sentences with lengths close to the average are as follows:
+   + Input (empathetic_dialogues) 
+      + Got rejected from a place I wanted to work, not once but three times
+      + I just really wanted some ice cream! Now I know their hours, though.
+      + I do sales work, but he always lies to us and takes our bonus money.
+      + Yeah, thank you! at which situation did you feel hope for your life?
+      + I hear ya.. I hope you find one soon... wishing you all of the best!
+    + Output (labels)
+      + Was this a friend you were in love with, or just a best friend?
+      + The grass makes me itchy, But the shower afterward feels great.
+      + I still took it since it was late but I rode in the front seat.
+      + Oh no... were they relaxed about it or did it cause a problem? 
+      + That's really considerate of you. Do they need your help a lot?
 
-**2. Sentiment Analysis**  
+**2. Sentence Similarity**
 - Utilized the `all-MiniLM-L6-v2` model from `SentenceTransformer` to convert each sentence into a vector representation and measured the similarity between these vectors using cosine similarity.
-- Values closer to -1 indicate negative sentiment, 0 represents neutral, and values closer to 1 indicate positive sentiment.  
 - Results
   - For the input dataset (empathetic_dialogues), the majority of similarity scores ranged between 0 and 0.3, indicating that most sentences exhibited weak similarity. Additionally, similarity scores exceeding 0.5 were extremely rare, suggesting that highly related sentences were relatively uncommon. 
-  - For the output (model's response), 
+  - For the output (model's response), we observe that the mean (0.1069) and median (0.0988) are close, and the small standard deviation (0.0997) indicates that the similarity scores are concentrated around the mean. This suggests that, in most cases, the similarity between the data points is relatively low.
+
+**3. Sentiment Analysis**  
+
+- Values closer to -1 indicate negative sentiment, 0 represents neutral, and values closer to 1 indicate positive sentiment.  
+- In both the input (empathetic dialogues) and output (labels) sentences, we observed the highest frequency of sentiment scores near 0, suggesting that most of the text tends to be emotionally neutral. Additionally, the distribution appears to be symmetrical, indicating a balanced presence of both positive and negative text.
 
 
 ### Word-Level Analysis
