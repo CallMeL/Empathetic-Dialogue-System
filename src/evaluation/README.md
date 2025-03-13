@@ -1,15 +1,19 @@
-
 # Evaluation
 The evaluation.ipynb notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
 
-## Explanation of the Data
-| Data   | Description                                                                                                                                                                                | Trained Model                              |
-| :---------------------------- |:--------------------------|-----------------|
-| 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               |single_conversation, <br/> single_conversation_rope,  <br/>single_conversation_relative  |
-| 59k_wholeconv_eot             | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted at  the end of the whole conversation.                                                                  | whole_conversation                         |
-| 59k_eachconv_eot_with_context | Under `context_tag` folder.<br />Facebook dataset with `endOfText`  <br />After every 2 sentences, including context.                                                                      | single_conversation_withcontext            |
-| 59k_eachconv_eot_with_emotion | Under `emotion_file` folder.>Facebook dataset with `endOfText`  <br />After every 2 sentences, including emotion.                                                                          | single_conversation_withemotion            |
-| with_gpt_data                 | Under `with_gpt_data` folder.  <br /> Based on  the question in 59k_eachconv_eot, we generated  the answer from ChatGPT 4omini, therefore we have 118k pairs of conversation               | single_conversation_withGPTdata_bs256, single_conversation_withGPTdata_withoutemotion |
+## 1. Summary of training models and datasets used
+
+| Model Name                                     | Trained Dataset                        | Description |
+|-----------------------------------------------|----------------------------------------|-------------|
+| single_conversation_withGPTdata_bs256        | with_gpt_data                          | Trained with supplementary GPT data, batch size 256. |
+| single_conversation_withGPTdata              | with_gpt_data                          | Excludes emotion/context tags, batch size 64. |
+| single_conversation_withcontext              | 59k_eachconv_eot_with_context          | Includes context for enhanced understanding, batch size 64. |
+| single_conversation_withemotion              | 59k_eachconv_eot_with_emotion          | Preserves emotion tags in dialogues, batch size 64. |
+| single_conversation                         | 59k_eachconv_eot                       | Excludes emotion annotations, batch size 64. |
+| single_conversation_rope                     | 59k_eachconv_eot                       | Excludes emotion tags, uses RoPE positional encoding, batch size 64. |
+| single_conversation_relative                 | 59k_eachconv_eot                       | Excludes emotion tags, uses relative positional encoding, batch size 64. |
+| whole_conversation                           | 59k_wholeconv_eot                      | Trained on complete dialogues, excluding non-essential tags, batch size 64. |
+
 
 ## 2. Results
 The tables below summarize the scores for each model/evaluation metric combination:
