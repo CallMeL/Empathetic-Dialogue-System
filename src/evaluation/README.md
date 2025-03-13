@@ -156,7 +156,7 @@ For deeper insight into relevance, coherente, and empathy, we could think of **h
 ### 3.2. Evaluating Different Positional Embeddings
 We aim to compare the performance of three different positional embedding strategies: Absolute Positional Embedding (single_conversation), RoPE (single_conversation_rope), and Relative Positional Embedding (single_conversation_relative).
 
-#### BLEU
+#### 3.2.1. BLEU
 | Model                      | AVG(BLEU) | BLEU-1  | BLEU-2  | BLEU-3  | BLEU-4  |
 |----------------------------|----------|--------|--------|--------|--------|
 | **Absolute** (single_conversation)  | 0.00587  | 0.03304  | 0.01045  | 0.00711  | 0.00587  |
@@ -165,7 +165,7 @@ We aim to compare the performance of three different positional embedding strate
 
 Overall, all BLEU scores are very low. While Relative Positional Embedding shows a slight advantage in BLEU scores, the difference is not significant.
 
-#### BERT
+#### 3.2.2. BERT
 | Model                      | BERT F1 |
 |----------------------------|---------|
 | **Absolute** (single_conversation)  | **0.8568**  |
@@ -174,17 +174,21 @@ Overall, all BLEU scores are very low. While Relative Positional Embedding shows
 
 Absolute Positional Embedding achieved overwhelmingly high performance (0.8568), while RoPE and Relative methods seem to struggle with preserving meaning and maintaining context.
 
-#### GLUE
+#### 3.2.3. GLUE
 
 | Model                      | GLUE Overall | GLUE-sst2 (Sentiment Analysis) |
 |----------------------------|--------------|------------------------------|
 | **Absolute** (single_conversation)  | **0.4727**  | **0.5986**  |
 | **RoPE** (single_conversation_rope) | 0.3297  | 0.5803  |
 | **Relative** (single_conversation_relative) | 0.3297  | 0.5036  |
-  | 0.00587  |
-| **RoPE** (single_conversation_rope) | 0.00588  | 0.03310  | 0.01046  | 0.00713  | 0.00588  |
-| **Relative** (single_conversation_relative) | **0.00599**  | **0.03369**  | **0.01065**  | **0.00725**  | **0.00599**  |
 
 Absolute Positional Embedding also achieved the highest performance in GLUE and SST-2 sentiment analysis.
 
-#### Perplexity
+#### 3.2.4. Perplexity
+| Model                      | Perplexity |
+|----------------------------|------------|
+| **Absolute** (single_conversation)  | **84066.95**  |
+| **RoPE** (single_conversation_rope) | 3,776,063.14  |
+| **Relative** (single_conversation_relative) | inf |
+
+Absolute Positional Embedding recorded the lowest Perplexity, indicating the most stable model training. In contrast, RoPE and Relative Positional Embedding showed extremely high or even infinite values, suggesting ineffective learning.
