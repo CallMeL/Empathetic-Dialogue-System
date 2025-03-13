@@ -192,3 +192,6 @@ Absolute Positional Embedding also achieved the highest performance in GLUE and 
 | **Relative** (single_conversation_relative) | inf |
 
 Absolute Positional Embedding recorded the lowest Perplexity, indicating the most stable model training. In contrast, RoPE and Relative Positional Embedding showed extremely high or even infinite values, suggesting ineffective learning.
+
+#### 3.2.5. Key takeawways
+Overall, absolute positional embedding is the most stable and performs the best. Our dataset has an average length of approximately 50 to 70 English characters, which is not particularly long. Given this, RoPE and relative positional embedding may not have been well-suited for training on our relatively small and short dataset.
