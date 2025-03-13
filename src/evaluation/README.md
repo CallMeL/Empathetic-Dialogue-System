@@ -166,8 +166,12 @@ We aim to compare the performance of three different positional embedding strate
 Overall, all BLEU scores are very low. While Relative Positional Embedding shows a slight advantage in BLEU scores, the difference is not significant.
 
 #### BERT
-
+| Model                      | BERT F1 |
+|----------------------------|---------|
+| **Absolute** (single_conversation)  | **0.8568**  |
+| **RoPE** (single_conversation_rope) | 0.4809  |
+| **Relative** (single_conversation_relative) | 0.3667  |
+Absolute Positional Embedding achieved overwhelmingly high performance (0.8568), while RoPE and Relative methods seem to struggle with preserving meaning and maintaining context.
 #### GLUE
 
 #### Perplexity
-
