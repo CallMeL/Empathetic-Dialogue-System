@@ -154,10 +154,20 @@ The evaluation highlights the strengths and limitations of each metric:
 For deeper insight into relevance, coherente, and empathy, we could think of **human evaluation**.
 
 ### 3.2. Evaluating Different Positional Embeddings
+We aim to compare the performance of three different positional embedding strategies: Absolute Positional Embedding (single_conversation), RoPE (single_conversation_rope), and Relative Positional Embedding (single_conversation_relative).
 
+#### BLEU
+| Model                      | AVG(BLEU) | BLEU-1  | BLEU-2  | BLEU-3  | BLEU-4  |
+|----------------------------|----------|--------|--------|--------|--------|
+| **Absolute** (single_conversation)  | 0.00587  | 0.03304  | 0.01045  | 0.00711  | 0.00587  |
+| **RoPE** (single_conversation_rope) | 0.00588  | 0.03310  | 0.01046  | 0.00713  | 0.00588  |
+| **Relative** (single_conversation_relative) | **0.00599**  | **0.03369**  | **0.01065**  | **0.00725**  | **0.00599**  |
 
+Overall, all BLEU scores are very low. While Relative Positional Embedding shows a slight advantage in BLEU scores, the difference is not significant.
 
+#### BERT
 
+#### GLUE
 
-
+#### Perplexity
 
