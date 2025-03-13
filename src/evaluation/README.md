@@ -171,7 +171,20 @@ Overall, all BLEU scores are very low. While Relative Positional Embedding shows
 | **Absolute** (single_conversation)  | **0.8568**  |
 | **RoPE** (single_conversation_rope) | 0.4809  |
 | **Relative** (single_conversation_relative) | 0.3667  |
+
 Absolute Positional Embedding achieved overwhelmingly high performance (0.8568), while RoPE and Relative methods seem to struggle with preserving meaning and maintaining context.
+
 #### GLUE
+
+| Model                      | GLUE Overall | GLUE-sst2 (Sentiment Analysis) |
+|----------------------------|--------------|------------------------------|
+| **Absolute** (single_conversation)  | **0.4727**  | **0.5986**  |
+| **RoPE** (single_conversation_rope) | 0.3297  | 0.5803  |
+| **Relative** (single_conversation_relative) | 0.3297  | 0.5036  |
+  | 0.00587  |
+| **RoPE** (single_conversation_rope) | 0.00588  | 0.03310  | 0.01046  | 0.00713  | 0.00588  |
+| **Relative** (single_conversation_relative) | **0.00599**  | **0.03369**  | **0.01065**  | **0.00725**  | **0.00599**  |
+
+Absolute Positional Embedding also achieved the highest performance in GLUE and SST-2 sentiment analysis.
 
 #### Perplexity
