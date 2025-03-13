@@ -80,8 +80,6 @@ Precision: 0
 **Recall**: This measure reflects how much of the reference text is covered by the candidate text.
 **F1 Score**: The F1 score is particularly useful because it accounts for both the precision and recall of the evaluation, providing a more balanced assessment of similarity.
 
-
-
 ![BERT Score illustration](BERTScore_illustration.png)
 Source: [link](https://arxiv.org/pdf/1904.09675)
 
