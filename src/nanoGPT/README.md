@@ -1,18 +1,23 @@
 # NanoGPT
 Code mainly taken from: [nanoGPT](https://github.com/karpathy/nanoGPT)
 ## A quick cheat sheet to run the code
-(make sure the environment is setup, i.e `PYTHONPATH`)
+Make sure you followed the environment in the project readme first , i.e `PYTHONPATH`. You can also go to [detailed running the code section](#run-the-code)
 ```
+# 1. Prepare the training data
 cd data
-python prepare.py  # Enter the dataset path, default is emotion/with_gpt_data/with_gpt_data.txt
+python prepare.py  # Enter the dataset path, by type nothing, the default is emotion/with_gpt_data/with_gpt_data.txt
 
+# 2. train the model
 cd ../src/nanoGPT
 
 time python train.py \
   --data_dir=data/emotion/with_gpt_data/ \
   --device=cpu \
+  
+#  you can enter control+c to stop the training process, a pt file will be saved under `out` file. 
 
-# enter control+c to stop the training process, a pt file will be saved under `out` file
+# 3. chat with the trained model
+
 python chat.py /Project-ML/src/nanoGPT/out/ckpt.pt #copy the absolute path of the out file
 
 ```
@@ -118,13 +123,13 @@ time python train.py \
   --n_embd=64 \
   --compile=False \
   --eval_iters=1 \
-  --block_size=64 \ # default 64
+  --block_size=64 \
   --batch_size=8 \
   --device=mps \
-  --init_from=resume \ # for continue training
-  --pos_embd=rope \ # change the position embeding 
+  --init_from=resume \
+  --pos_embd=rope \
+  --always_save_checkpoint=False
 ```
-+ When the training starts, hit `^ A` so later we can copy all the logs to this [website](https://observablehq.com/@simonw/plot-loss-from-nanogpt), then get the log graph. (we will definitely improve the logging later )
 + pos_embd options: default, rope, relative
 
 
