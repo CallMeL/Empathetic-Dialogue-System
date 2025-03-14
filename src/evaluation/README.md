@@ -1,34 +1,23 @@
-
 # Evaluation
 The evaluation.ipynb notebook is designed to evaluate multiple models using different metrics. It aims to identify the best-performing model based on specific criteria
 
-## Explanation of the Data
-| Data   | Description                                                                                                                                                                                | Trained Model                              |
-| :---------------------------- |:--------------------------|-----------------|
-| 59k_eachconv_eot              | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted after  every 2 sentences.                                                                               |single_conversation, <br/> single_conversation_rope,  <br/>single_conversation_relative  |
-| 59k_wholeconv_eot             | Under `no_additional_tag` folder. <br />Facebook dataset with `endOfText` inserted at  the end of the whole conversation.                                                                  | whole_conversation                         |
-| 59k_eachconv_eot_with_context | Under `context_tag` folder.<br />Facebook dataset with `endOfText`  <br />After every 2 sentences, including context.                                                                      | single_conversation_withcontext            |
-| 59k_eachconv_eot_with_emotion | Under `emotion_file` folder.>Facebook dataset with `endOfText`  <br />After every 2 sentences, including emotion.                                                                          | single_conversation_withemotion            |
-| with_gpt_data                 | Under `with_gpt_data` folder.  <br /> Based on  the question in 59k_eachconv_eot, we generated  the answer from ChatGPT 4omini, therefore we have 118k pairs of conversation               | single_conversation_withGPTdata_bs256, single_conversation_withGPTdata_withoutemotion |
+## 1. Summary of training models and datasets used
 
-## 2. Results
-The tables below summarize the scores for each model/evaluation metric combination:
-
-| Model                                            | AVG(BLEU)              | BLEU-1                | BLEU-2                 | BLEU-3               | BLEU-4               | Bert F1            | GLUE                  | GLUE-sst2            | Perplexity          |
-|--------------------------------------------------|------------------------|----------------------|------------------------|----------------------|----------------------|--------------------|-----------------------|----------------------|---------------------|
-| single_conversation                              | 0.00587468362062949    | 0.03303577372298825  | 0.010446828923058333   | 0.007117341692084967 | 0.00587468362062949  | 0.8568010926246643 | **0.4727166374195705** | 0.5986462772624718  | 84066.95248548205   |
-| single_conversation_rope                         | 0.005886990900708465   | --                   | --                     | --                   | --                   | 0.48094046115875244| 0.32974011865964736   | --        | 3776063.144329027   |
-| single_conversation_relative                     | 0.005992347214885741   | --                   | --                     | --                   | --                   | 0.36667502297986126| 0.32974011865964736   | --        | inf                 |
-| whole_conversation                               | 0.005539267542303131   | 0.031149590503226302 | 0.009850365417174566   | 0.006710975836043849 | 0.005539267542303131 | 0.8480852246284485 | 0.43603242249519514   | 0.587031001921952   | 29549.33700155131   |
-| single_conversation_withemotion                  | 0.005846493825725561   | 0.03287725085675706  | 0.010396699591207457   | 0.007083188975867789 | 0.005846493825725561 | 0.8573451042175293 | 0.4721316954959472    | 0.6031586863875658  | 2008198.4398578384  |
-| single_conversation_withcontext                  | 0.005802720584588993   | 0.03263109583247091  | 0.010318858537783629   | 0.007030156483523018 | 0.005802720584588993 | 0.8359043002128601 | 0.45884515751650373   | 0.5880337595053062  | 63035.03316265359   |
-| single_conversation_withGPTdata_withoutemotion   | **0.006432147502200551**| 0.036170623502072514 | **0.011438155465496527** | **0.007792724603294758** | **0.006432147502200551** | **0.8576485514640808** | **0.47171387983621627** | **0.60416144397092**   | 28233.374812001217  |
-| single_conversation_withGPTdata_bs256            | 0.0062091122888948     | 0.034916404327927836 | 0.011041536537961272   | 0.007522511273526714 | 0.0062091122888948   | 0.48648038506507874| 0.34519929806969163   | 0.5972257040193867  | 218114.86185134976  |
+| Model Name                                     | Trained Dataset                        | Description |
+|-----------------------------------------------|----------------------------------------|-------------|
+| single_conversation_withGPTdata_bs256        | with_gpt_data                          | Trained with supplementary GPT data, batch size 256. |
+| single_conversation_withGPTdata              | with_gpt_data                          | Excludes emotion/context tags, batch size 64. |
+| single_conversation_withcontext              | 59k_eachconv_eot_with_context          | Includes context for enhanced understanding, batch size 64. |
+| single_conversation_withemotion              | 59k_eachconv_eot_with_emotion          | Preserves emotion tags in dialogues, batch size 64. |
+| single_conversation                         | 59k_eachconv_eot                       | Excludes emotion annotations, batch size 64. |
+| single_conversation_rope                     | 59k_eachconv_eot                       | Excludes emotion tags, uses RoPE positional encoding, batch size 64. |
+| single_conversation_relative                 | 59k_eachconv_eot                       | Excludes emotion tags, uses relative positional encoding, batch size 64. |
+| whole_conversation                           | 59k_wholeconv_eot                      | Trained on complete dialogues, excluding non-essential tags, batch size 64. |
 
 
-## 3. Metric Descriptions
+## 2. Metric Descriptions
 
-### 3.1. BLEU (Bilingual Evaluation Understudy)
+### 2.1. BLEU (Bilingual Evaluation Understudy)
 
 - Measures **n-gram overlap** (unigrams (BLEU-1), bigrams (BLEU-2), trigrams (BLEU-3), and 4-grams (BLEU-4) )between reference text and model-generated text.
 - **Limitation:** Cannot capture long-range dependencies, reordering, or more nuanced semantic elements. 
@@ -71,7 +60,7 @@ Reference: "A quick brown fox jumps over"
 Four-grams: ["The quick brown fox"]
 Precision: 0
 
-### 3.2. BERTScore
+### 2.2. BERTScore
 - Use **contextual embeddings** (e.g. BERT, RoBERTA to assess semantic similarity between generated text and referece)
 
     We used 'roberta-large' trained on 160GB of text. relies only on MLM (Masked Language Model) for pretraining
@@ -91,8 +80,6 @@ Precision: 0
 **Recall**: This measure reflects how much of the reference text is covered by the candidate text.
 **F1 Score**: The F1 score is particularly useful because it accounts for both the precision and recall of the evaluation, providing a more balanced assessment of similarity.
 
-
-
 ![BERT Score illustration](BERTScore_illustration.png)
 Source: [link](https://arxiv.org/pdf/1904.09675)
 
@@ -105,7 +92,7 @@ BERTScore Recall: 0.9777
 BERTScore F1: 0.977
 ```
 
-### 3.3. GLUE (General Language Understanding Evaluation)
+### 2.3. GLUE (General Language Understanding Evaluation)
 GLUE, also known as General Language Understanding Evaluation, is an evaluation benchmark designed to measure the performance of language understanding models in a range of natural language processing (NLP) tasks.
 
 GLUE has different possible tasks. For the purpose of our project maybe this one is the most interesting: SST-2 (Sentiment Analysis). Stanford Sentiment Treebank 2. Sentiment classification (positive or negative) of sentences.
@@ -131,13 +118,28 @@ The metrics we use : bhadresh-savani/distilbert-base-uncased-emotion. Supported 
 
 - 'sst2' main evaluation metric is accuracy (Number of correct predictions/ Total number of predictions).
 
-### 3.4. Perplexity
+### 2.4. Perplexity
 - Quantifies the language model's "surprise" for a piece of text: lower means the model is **less surprised** ad presumably better at predicting tokens
 - Model-dependent: the underlying language model affects perplexity calculation (different language models may assing different probabilities to the same sentence)
 - **Limitation**: Low perplexity doesn't necessarily mean high-quality or correct semantic answerrs; it cam be overconfident on incorrect guesses.
 
-## Conclusion
 
+## 3. Results
+The tables below summarize the scores for each model/evaluation metric combination:
+
+| Model                                            | AVG(BLEU)              | BLEU-1                | BLEU-2                 | BLEU-3               | BLEU-4               | Bert F1            | GLUE                  | GLUE-sst2            | Perplexity          |
+|--------------------------------------------------|------------------------|----------------------|------------------------|----------------------|----------------------|--------------------|-----------------------|----------------------|---------------------|
+| single_conversation                              | 0.00587468362062949    | 0.03303577372298825  | 0.010446828923058333   | 0.007117341692084967 | 0.00587468362062949  | 0.8568010926246643 | **0.4727166374195705** | 0.5986462772624718  | 84066.95248548205   |
+| single_conversation_rope                         | 0.005886990900708465   | 0.0331049826448783                   | 0.010468714705815745                     | 0.007132252302304039                   | 0.005886990900708465                   | 0.48094046115875244| 0.32974011865964736   | 0.5803459513662572        | 3776063.144329027   |
+| single_conversation_relative                     | 0.005992347214885741   | 0.03369744473821001                   | 0.010656067670037761                     | 0.0072598943909452                  | 0.005992347214885741                   | 0.36667502297986126| 0.32974011865964736   | 0.503634996239659        | inf                 |
+| whole_conversation                               | 0.005539267542303131   | 0.031149590503226302 | 0.009850365417174566   | 0.006710975836043849 | 0.005539267542303131 | 0.8480852246284485 | 0.43603242249519514   | 0.587031001921952   | 29549.33700155131   |
+| single_conversation_withemotion                  | 0.005846493825725561   | 0.03287725085675706  | 0.010396699591207457   | 0.007083188975867789 | 0.005846493825725561 | 0.8573451042175293 | 0.4721316954959472    | 0.6031586863875658  | 2008198.4398578384  |
+| single_conversation_withcontext                  | 0.005802720584588993   | 0.03263109583247091  | 0.010318858537783629   | 0.007030156483523018 | 0.005802720584588993 | 0.8359043002128601 | 0.45884515751650373   | 0.5880337595053062  | 63035.03316265359   |
+| single_conversation_withGPTdata_withoutemotion   | **0.006432147502200551**| 0.036170623502072514 | **0.011438155465496527** | **0.007792724603294758** | **0.006432147502200551** | **0.8576485514640808** | **0.47171387983621627** | **0.60416144397092**   | 28233.374812001217  |
+| single_conversation_withGPTdata_bs256            | 0.0062091122888948     | 0.034916404327927836 | 0.011041536537961272   | 0.007522511273526714 | 0.0062091122888948   | 0.48648038506507874| 0.34519929806969163   | 0.5972257040193867  | 218114.86185134976  |
+
+## Conclusion
+### 3.1. Overall Evaluating 
 The model **single_conversation_withGPTdata_withoutemotion** performs the best in all evaluation metrics besides GLUE.
 
 - **Metric Insigths**:
@@ -149,9 +151,45 @@ The evaluation highlights the strengths and limitations of each metric:
 
 For deeper insight into relevance, coherente, and empathy, we could think of **human evaluation**.
 
+### 3.2. Evaluating Different Positional Embeddings
+We aim to compare the performance of three different positional embedding strategies: Absolute Positional Embedding (single_conversation), RoPE (single_conversation_rope), and Relative Positional Embedding (single_conversation_relative).
 
+#### 3.2.1. BLEU
+| Model                      | AVG(BLEU) | BLEU-1  | BLEU-2  | BLEU-3  | BLEU-4  |
+|----------------------------|----------|--------|--------|--------|--------|
+| **Absolute** (single_conversation)  | 0.00587  | 0.03304  | 0.01045  | 0.00711  | 0.00587  |
+| **RoPE** (single_conversation_rope) | 0.00588  | 0.03310  | 0.01046  | 0.00713  | 0.00588  |
+| **Relative** (single_conversation_relative) | **0.00599**  | **0.03369**  | **0.01065**  | **0.00725**  | **0.00599**  |
 
+Overall, all BLEU scores are very low. While Relative Positional Embedding shows a slight advantage in BLEU scores, the difference is not significant.
 
+#### 3.2.2. BERT
+| Model                      | BERT F1 |
+|----------------------------|---------|
+| **Absolute** (single_conversation)  | **0.8568**  |
+| **RoPE** (single_conversation_rope) | 0.4809  |
+| **Relative** (single_conversation_relative) | 0.3667  |
 
+Absolute Positional Embedding achieved overwhelmingly high performance (0.8568), while RoPE and Relative methods seem to struggle with preserving meaning and maintaining context.
 
+#### 3.2.3. GLUE
 
+| Model                      | GLUE Overall | GLUE-sst2 (Sentiment Analysis) |
+|----------------------------|--------------|------------------------------|
+| **Absolute** (single_conversation)  | **0.4727**  | **0.5986**  |
+| **RoPE** (single_conversation_rope) | 0.3297  | 0.5803  |
+| **Relative** (single_conversation_relative) | 0.3297  | 0.5036  |
+
+Absolute Positional Embedding also achieved the highest performance in GLUE and SST-2 sentiment analysis.
+
+#### 3.2.4. Perplexity
+| Model                      | Perplexity |
+|----------------------------|------------|
+| **Absolute** (single_conversation)  | **84066.95**  |
+| **RoPE** (single_conversation_rope) | 3,776,063.14  |
+| **Relative** (single_conversation_relative) | inf |
+
+Absolute Positional Embedding recorded the lowest Perplexity, indicating the most stable model training. In contrast, RoPE and Relative Positional Embedding showed extremely high or even infinite values, suggesting ineffective learning.
+
+#### 3.2.5. Key takeawways
+Overall, absolute positional embedding is the most stable and performs the best. Our dataset has an average length of approximately 50 to 70 English characters, which is not particularly long. Given this, RoPE and relative positional embedding may not have been well-suited for training on our relatively small and short dataset.

@@ -131,13 +131,23 @@ time python train.py \
 ### chat with the bot locally
 configure `init_from `based on where the trained model is saved
 ```
-cd ./src/models/nanoGPT
-python chat.py block_size=64/withoutemotion/wholeConversation
-python chat.py block_size=64/withoutemotion/singleConversation
-python chat.py block_size=64/withemotion
-python chat.py block_size=64/withoutemotion/singleConversation_withGPTdata
-python chat.py block_size=64/withcontext
-python chat.py block_size=256/singleConversation_withGPTdata
+cd ./src/nanoGPT
+
+# Default Positional Embedding
+
+python chat.py ..trained-saved/block_size=64/withcontext/ckpt.pt
+python chat.py ..trained-saved/block_size=64/withemotion/ckpt.pt
+python chat.py ..trained-saved/block_size=64/withoutemotion/singleConversation/ckpt.pt
+python chat.py ..trained-saved/block_size=64/withoutemotion/singleConversation_withGPTdata/ckpt.pt
+python chat.py ..trained-saved/block_size=64/withoutemotion/wholeConversation/ckpt.pt
+
+python chat.py ..trained-saved/block_size=256/singleConversation_withGPTdata/ckpt.pt
+
+# Relative Positional Embedding
+python chat.py ../trained-saved/Relative/withoutemotion/singleConversation/ckpt.pt
+
+# Rope Positional Embedding
+python chat.py ../trained-saved/Rope/withoutemotion/singleConversation/ckpt.pt
 ```
 
 ###  Evaluate nanoGPT
